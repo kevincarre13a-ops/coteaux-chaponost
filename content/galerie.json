@@ -1,0 +1,23 @@
+{
+  "meta_desc": "La vigne au fil des saisons, les travaux, les vendanges, les festivités et les événements des Coteaux de Chaponost.",
+  "hero_image": "img/banquet.jpg",
+  "note_text": "Photos et vidéo transmises par l'association (aperçu, non définitif). Cet espace accueillera la suite : chaque saison, chaque vendange.",
+  "tiles": [
+    {"image": "img/vendanges.jpg", "caption": "Vendanges dans la parcelle", "tag": "v"},
+    {"image": "img/caisses.jpg", "caption": "Les caisses de raisin, noir et blanc", "tag": "v"},
+    {"image": "img/banquet.jpg", "caption": "Repas en plein air, vue du ciel", "tag": "c"},
+    {"image": "img/pique-nique.jpg", "caption": "Déjeuner entre adhérents", "tag": "f"},
+    {"image": "img/automne.jpg", "caption": "La vigne en automne", "tag": "t"},
+    {"image": "img/neige.jpg", "caption": "La parcelle sous la neige", "tag": "t"},
+    {"image": "img/rangs.jpg", "caption": "Les rangs au printemps", "tag": "t"},
+    {"image": "img/taille.jpg", "caption": "Taille de la vigne", "tag": "t"},
+    {"image": "img/pressoir.jpg", "caption": "Le pressoir ancien", "tag": "t"},
+    {"image": "img/confiture.jpg", "caption": "Préparation des confitures, en commun", "tag": "f"},
+    {"image": "img/cerises.jpg", "caption": "Cerises du verger", "tag": "t"},
+    {"image": "img/panneau.jpg", "caption": "Le panneau de l'association", "tag": "c"}
+  ],
+  "video_note": "Une première vidéo en ligne ; la taille, les vendanges, le pressage et le banquet suivront.",
+  "video_file": "img/histoire-du-vin.mp4",
+  "video_poster": "img/poster-video.jpg",
+  "video_caption": "La petite histoire du vin"
+}

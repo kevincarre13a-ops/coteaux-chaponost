@@ -1,0 +1,208 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "img"
+public_folder: "img"
+
+locale: "fr"
+
+collections:
+  - name: "site"
+    label: "Réglages du site"
+    files:
+      - name: "site"
+        label: "Coordonnées & bandeau"
+        file: "content/site.json"
+        fields:
+          - {label: "Email", name: "email", widget: "string"}
+          - {label: "Téléphone affiché", name: "phone", widget: "string"}
+          - {label: "Téléphone (format +33616241682, pour le bouton d'appel)", name: "phone_tel", widget: "string"}
+          - {label: "Lien Facebook", name: "facebook_url", widget: "string"}
+          - {label: "Adresse — ligne 1", name: "address_line1", widget: "string"}
+          - {label: "Adresse — ligne 2", name: "address_line2", widget: "string"}
+          - {label: "Adresse — ligne 3", name: "address_line3", widget: "string"}
+          - {label: "Bandeau d'accueil — nom de l'événement", name: "flash_event", widget: "string"}
+          - {label: "Bandeau d'accueil — date", name: "flash_date", widget: "string"}
+
+  - name: "pages"
+    label: "Pages du site"
+    files:
+      - name: "index"
+        label: "Accueil"
+        file: "content/index.json"
+        fields:
+          - {label: "Description (référencement, non visible)", name: "meta_desc", widget: "text"}
+          - {label: "Photo d'en-tête", name: "hero_image", widget: "image"}
+          - {label: "Petite phrase au-dessus du grand titre", name: "hero_kicker", widget: "string"}
+          - {label: "Sous-titre", name: "hero_sub", widget: "text"}
+          - {label: "Mot de bienvenue", name: "welcome_text", widget: "text"}
+          - {label: "Texte « Prochain rendez-vous »", name: "next_text", widget: "text"}
+          - {label: "Texte « Notre histoire »", name: "history_text", widget: "text", hint: "Pour un nouveau paragraphe, laissez une ligne vide entre les deux."}
+          - {label: "Photo « Notre histoire »", name: "history_image", widget: "image"}
+          - {label: "Phrase d'invitation (bas de page)", name: "cta_text", widget: "string"}
+
+      - name: "association"
+        label: "Association"
+        file: "content/association.json"
+        fields:
+          - {label: "Description (référencement, non visible)", name: "meta_desc", widget: "text"}
+          - {label: "Photo d'en-tête", name: "hero_image", widget: "image"}
+          - {label: "Texte Historique", name: "history_text", widget: "text", hint: "Laissez une ligne vide entre deux paragraphes."}
+          - {label: "Note Historique (petit texte en italique)", name: "history_note", widget: "text"}
+          - {label: "Photo Historique", name: "history_image", widget: "image"}
+          - {label: "Citation « Le mot du Bureau »", name: "word_text", widget: "text"}
+          - {label: "Signature de la citation", name: "word_signature", widget: "string"}
+          - {label: "Président(e)", name: "president", widget: "string"}
+          - {label: "Vice-président(e)", name: "vice_president", widget: "string"}
+          - {label: "Trésorier(ère)", name: "treasurer", widget: "string"}
+          - {label: "Secrétaire", name: "secretary", widget: "string"}
+          - {label: "Membres du CA", name: "board_members", widget: "string"}
+          - {label: "Commissions", name: "commissions", widget: "string"}
+          - label: "Organisation — réunions & rendez-vous"
+            name: "org_items"
+            widget: "list"
+            fields:
+              - {label: "Quand", name: "date", widget: "string"}
+              - {label: "Titre", name: "title", widget: "string"}
+              - {label: "Texte", name: "text", widget: "text"}
+          - label: "Articles de presse"
+            name: "press_items"
+            widget: "list"
+            fields:
+              - {label: "Titre", name: "title", widget: "string"}
+              - {label: "Texte", name: "text", widget: "text"}
+
+      - name: "la-vigne"
+        label: "La vigne"
+        file: "content/la-vigne.json"
+        fields:
+          - {label: "Description (référencement, non visible)", name: "meta_desc", widget: "text"}
+          - {label: "Photo d'en-tête", name: "hero_image", widget: "image"}
+          - {label: "Texte « Le terroir »", name: "terroir_text", widget: "text"}
+          - {label: "Photo « Le terroir »", name: "terroir_image", widget: "image"}
+          - {label: "Localisation (adresse)", name: "loc_location", widget: "string"}
+          - {label: "Surface", name: "loc_surface", widget: "string"}
+          - {label: "Exposition", name: "loc_exposition", widget: "string"}
+          - {label: "Année de plantation", name: "loc_plantation_year", widget: "string"}
+          - {label: "Appellation", name: "loc_appellation", widget: "string"}
+          - {label: "Production", name: "loc_production", widget: "string"}
+          - {label: "Photo vue satellite", name: "loc_sat_image", widget: "image"}
+          - {label: "Photo plan de situation", name: "loc_plan_image", widget: "image"}
+          - {label: "Texte vin blanc", name: "white_text", widget: "text"}
+          - {label: "Texte vin rouge", name: "red_text", widget: "text"}
+          - {label: "Photo de la citation (bandeau)", name: "band_image", widget: "image"}
+          - {label: "Texte de la citation (bandeau)", name: "band_text", widget: "text"}
+          - label: "Étapes de l'année"
+            name: "steps"
+            widget: "list"
+            fields:
+              - {label: "Titre", name: "title", widget: "string"}
+              - {label: "Texte", name: "text", widget: "text"}
+          - {label: "Photo étape 1", name: "step_image1", widget: "image"}
+          - {label: "Photo étape 2", name: "step_image2", widget: "image"}
+          - {label: "Nom du vigneron / domaine", name: "vigneron_name", widget: "string"}
+          - {label: "Rôle auprès de l'association", name: "vigneron_role", widget: "string"}
+          - {label: "Présentation du vigneron", name: "vigneron_text", widget: "text"}
+          - {label: "Cépage du vin blanc", name: "bottle_white_cepage", widget: "string"}
+          - {label: "Description du vin blanc", name: "bottle_white_desc", widget: "text"}
+          - {label: "Cépage du vin rouge", name: "bottle_red_cepage", widget: "string"}
+          - {label: "Description du vin rouge", name: "bottle_red_desc", widget: "text"}
+          - label: "Millésimes"
+            name: "millesimes"
+            widget: "list"
+            fields:
+              - {label: "Année", name: "year", widget: "string"}
+              - {label: "Blanc", name: "blanc", widget: "string"}
+              - {label: "Rouge", name: "rouge", widget: "string"}
+              - {label: "Remarques", name: "remarks", widget: "string"}
+
+      - name: "cerisaie"
+        label: "La Cerisaie"
+        file: "content/cerisaie.json"
+        fields:
+          - {label: "Description (référencement, non visible)", name: "meta_desc", widget: "text"}
+          - {label: "Photo d'en-tête", name: "hero_image", widget: "image"}
+          - {label: "Texte d'intro", name: "intro_text", widget: "text"}
+          - {label: "Note d'intro (petit texte en italique)", name: "intro_note", widget: "text"}
+          - {label: "Photo d'intro", name: "intro_image", widget: "image"}
+          - {label: "Photo confiture", name: "confiture_image", widget: "image"}
+          - {label: "Prix du pot", name: "price", widget: "string"}
+          - {label: "Points de vente", name: "points_de_vente", widget: "string"}
+          - {label: "Période de vente", name: "periode", widget: "string"}
+
+      - name: "agenda"
+        label: "Agenda"
+        file: "content/agenda.json"
+        fields:
+          - {label: "Description (référencement, non visible)", name: "meta_desc", widget: "text"}
+          - {label: "Photo d'en-tête", name: "hero_image", widget: "image"}
+          - {label: "Note en haut de page", name: "note_text", widget: "text"}
+          - label: "Groupes de dates"
+            name: "groups"
+            widget: "list"
+            fields:
+              - {label: "Titre du groupe", name: "heading", widget: "string"}
+              - {label: "Identifiant technique (ne pas modifier)", name: "anchor", widget: "string"}
+              - label: "Dates"
+                name: "events"
+                widget: "list"
+                fields:
+                  - {label: "Quand", name: "date", widget: "string"}
+                  - {label: "Titre", name: "title", widget: "string"}
+                  - {label: "Texte", name: "text", widget: "text"}
+
+      - name: "evenements"
+        label: "Événements"
+        file: "content/evenements.json"
+        fields:
+          - {label: "Description (référencement, non visible)", name: "meta_desc", widget: "text"}
+          - {label: "Photo d'en-tête", name: "hero_image", widget: "image"}
+          - label: "Nos grands rendez-vous"
+            name: "cards"
+            widget: "list"
+            fields:
+              - {label: "Photo", name: "image", widget: "image"}
+              - {label: "Titre", name: "title", widget: "string"}
+              - {label: "Texte", name: "text", widget: "text"}
+              - label: "Catégorie liée (galerie)"
+                name: "tag"
+                widget: "select"
+                options:
+                  - {label: "Vendanges", value: "v"}
+                  - {label: "Travaux", value: "t"}
+                  - {label: "Festivités", value: "f"}
+                  - {label: "Événements", value: "c"}
+
+      - name: "galerie"
+        label: "Galerie"
+        file: "content/galerie.json"
+        fields:
+          - {label: "Description (référencement, non visible)", name: "meta_desc", widget: "text"}
+          - {label: "Photo d'en-tête", name: "hero_image", widget: "image"}
+          - {label: "Note en haut de page", name: "note_text", widget: "text"}
+          - label: "Photos de la galerie"
+            name: "tiles"
+            widget: "list"
+            fields:
+              - {label: "Photo", name: "image", widget: "image"}
+              - {label: "Légende", name: "caption", widget: "string"}
+              - label: "Catégorie"
+                name: "tag"
+                widget: "select"
+                options:
+                  - {label: "Vendanges", value: "v"}
+                  - {label: "Travaux", value: "t"}
+                  - {label: "Festivités", value: "f"}
+                  - {label: "Événements", value: "c"}
+          - {label: "Note au-dessus des vidéos", name: "video_note", widget: "text"}
+          - {label: "Fichier vidéo", name: "video_file", widget: "file"}
+          - {label: "Image d'aperçu de la vidéo", name: "video_poster", widget: "image"}
+          - {label: "Légende de la vidéo", name: "video_caption", widget: "string"}
+
+      - name: "contact"
+        label: "Contact"
+        file: "content/contact.json"
+        fields:
+          - {label: "Description (référencement, non visible)", name: "meta_desc", widget: "text"}
+          - {label: "Photo d'en-tête", name: "hero_image", widget: "image"}

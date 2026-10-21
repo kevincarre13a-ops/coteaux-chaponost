@@ -1,0 +1,26 @@
+{
+  "meta_desc": "Historique, composition du bureau et du CA, organisation et actualité presse de l'association Les Coteaux de Chaponost.",
+  "hero_image": "img/pique-nique.jpg",
+  "history_text": "À Chaponost, comme dans tout l'ouest lyonnais, la vigne a longtemps rythmé la vie du village. Il n'en reste aujourd'hui qu'une parcelle : la dernière. C'est pour la sauvegarder qu'est née l'association Les Coteaux de Chaponost, dont la mission est de cultiver et faire vivre ce dernier témoin du vignoble des Coteaux du Lyonnais sur la commune.\n\nDepuis, des bénévoles de tous âges — 130 adhérents aujourd'hui, majoritairement retraités mais ouverts à tous — se relaient au fil des saisons : taille, enherbement, traitements, vendanges, pressage, mise en bouteille. Chaque année, la parcelle donne environ 400 bouteilles de vin blanc et de vin rouge.",
+  "history_note": "Date de création, étapes marquantes de l'histoire de la vigne et de l'association : à compléter.",
+  "history_image": "img/taille.jpg",
+  "word_text": "« Cette vigne est le dernier témoin du passé viticole de Chaponost. Ensemble, nous la cultivons, nous la vendangeons et nous partageons le fruit de notre travail. Venez nous rejoindre ! »",
+  "word_signature": "Le Bureau de l'association",
+  "president": "à compléter",
+  "vice_president": "à compléter",
+  "treasurer": "à compléter",
+  "secretary": "à compléter",
+  "board_members": "à compléter",
+  "commissions": "Travaux de la vigne · Événements · Communication",
+  "org_items": [
+    {"date": "À définir", "title": "Réunions du Conseil d'administration", "text": "Fréquence des CA à préciser par l'association (ex. trimestrielle)."},
+    {"date": "Début d'année", "title": "Assemblée générale", "text": "Bilan de l'année et projets, ouverte à tous les adhérents."},
+    {"date": "Automne", "title": "Vendanges", "text": "Le grand rendez-vous collectif de la vigne."},
+    {"date": "Annuel", "title": "Banquet annuel", "text": "Le repas qui réunit tous les adhérents."}
+  ],
+  "press_items": [
+    {"title": "Article à venir", "text": "Coupure de presse ou lien à transmettre à l'association."},
+    {"title": "Article à venir", "text": "Coupure de presse ou lien à transmettre à l'association."},
+    {"title": "Article à venir", "text": "Coupure de presse ou lien à transmettre à l'association."}
+  ]
+}

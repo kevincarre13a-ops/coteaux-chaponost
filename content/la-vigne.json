@@ -1,0 +1,40 @@
+{
+  "meta_desc": "La parcelle, le terroir, les cépages, les travaux de la vigne, le vigneron partenaire et les vins des Coteaux de Chaponost.",
+  "hero_image": "img/rangs.jpg",
+  "terroir_text": "Au pied des Monts du Lyonnais, l'AOC Coteaux du Lyonnais s'étend sur les collines à l'ouest de Lyon. Sols de coteaux, expositions variées : un terroir connu pour ses rouges de gamay et ses blancs frais.\n\nLa parcelle de Chaponost en est l'un des derniers témoins sur la commune.",
+  "terroir_image": "img/neige.jpg",
+  "loc_location": "Chemin de l'Arcelan, 69630 Chaponost",
+  "loc_surface": "à compléter",
+  "loc_exposition": "à compléter",
+  "loc_plantation_year": "à compléter",
+  "loc_appellation": "Coteaux du Lyonnais",
+  "loc_production": "≈ 400 bouteilles / an",
+  "loc_sat_image": "img/localisation-satellite.jpg",
+  "loc_plan_image": "img/localisation-plan.jpg",
+  "white_text": "Le vin blanc des Coteaux de Chaponost est issu du chardonnay, cépage emblématique des blancs en Coteaux du Lyonnais.",
+  "red_text": "Le vin rouge est issu du gamay, cépage roi de l'appellation pour les rouges.",
+  "band_image": "img/automne.jpg",
+  "band_text": "Une vigne se cultive toute l'année. Le raisin n'est que la dernière étape.",
+  "steps": [
+    {"title": "Taille", "text": "Hiver (janv.–mars) — on choisit les sarments qui porteront les grappes."},
+    {"title": "Enherbement", "text": "Printemps (avril–mai) — on entretient l'herbe entre les rangs."},
+    {"title": "Traitements", "text": "Printemps / été (mai–août) — on protège la vigne, au plus juste."},
+    {"title": "Vendanges", "text": "Fin d'été / automne (sept.–oct.) — la grande journée collective."},
+    {"title": "Pressage", "text": "Octobre — on presse le raisin et on met en cuve."},
+    {"title": "Mise en bouteille", "text": "Printemps suivant — étiquette collée main, évidemment."}
+  ],
+  "step_image1": "img/taille.jpg",
+  "step_image2": "img/pressoir.jpg",
+  "vigneron_name": "à compléter",
+  "vigneron_role": "à compléter",
+  "vigneron_text": "à compléter (quelques lignes sur le partenariat, depuis quand, ce qu'il apporte à la vigne de Chaponost).",
+  "bottle_white_cepage": "Chardonnay",
+  "bottle_white_desc": "Notre vin blanc, issu de la dernière vigne du village.",
+  "bottle_red_cepage": "Gamay",
+  "bottle_red_desc": "Notre vin rouge, élevé et mis en bouteille par les bénévoles.",
+  "millesimes": [
+    {"year": "2025", "blanc": "—", "rouge": "—", "remarks": "à compléter"},
+    {"year": "2024", "blanc": "—", "rouge": "—", "remarks": "à compléter"},
+    {"year": "2023", "blanc": "—", "rouge": "—", "remarks": "à compléter"}
+  ]
+}

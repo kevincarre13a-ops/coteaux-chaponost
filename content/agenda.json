@@ -1,0 +1,42 @@
+{
+  "meta_desc": "Toutes les dates à venir des Coteaux de Chaponost : travaux de la vigne, cerisaie, vie associative et événements festifs.",
+  "hero_image": "img/rangs.jpg",
+  "note_text": "Les mois indiqués suivent le calendrier habituel de la vigne ; les dates précises sont communiquées par l'association.",
+  "groups": [
+    {
+      "anchor": "travaux",
+      "heading": "Travaux de la vigne",
+      "events": [
+        {"date": "Janv.–Mars", "title": "Taille", "text": "On taille les ceps pour préparer la récolte."},
+        {"date": "Avril–Mai", "title": "Enherbement", "text": "Entretien de l'herbe entre les rangs."},
+        {"date": "Mai–Août", "title": "Traitements", "text": "Soins raisonnés de la vigne."},
+        {"date": "Sept.–Oct.", "title": "Vendanges", "text": "La grande journée collective de cueillette."},
+        {"date": "Oct.", "title": "Pressage", "text": "Pressage du raisin et mise en cuve."},
+        {"date": "Printemps", "title": "Mise en bouteille", "text": "Embouteillage et étiquetage par les bénévoles."}
+      ]
+    },
+    {
+      "anchor": "cerisaie",
+      "heading": "La Cerisaie",
+      "events": [
+        {"date": "Été", "title": "Récolte des cerises", "text": "Cueillette dans le verger, à compléter avec les dates précises."},
+        {"date": "Été", "title": "Confitures", "text": "Fabrication des confitures de cerises, en commun."}
+      ]
+    },
+    {
+      "anchor": "festif",
+      "heading": "Événements festifs",
+      "events": [
+        {"date": "Au fil de l'année", "title": "Rendez-vous conviviaux", "text": "Repas, dégustations, balades dans la vigne : le programme est à compléter par l'association."}
+      ]
+    },
+    {
+      "anchor": "asso",
+      "heading": "Vie associative",
+      "events": [
+        {"date": "Début d'année", "title": "Assemblée générale", "text": "Bilan de l'année et projets, ouvert à tous les adhérents."},
+        {"date": "Annuel", "title": "Banquet annuel", "text": "Le grand repas qui réunit tous les adhérents."}
+      ]
+    }
+  ]
+}
