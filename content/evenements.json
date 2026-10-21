@@ -2,8 +2,29 @@
   "meta_desc": "Les événements festifs et associatifs des Coteaux de Chaponost : vendanges, banquet annuel, rendez-vous conviviaux.",
   "hero_image": "img/banquet.jpg",
   "cards": [
-    {"image": "img/vendanges.jpg", "title": "Les vendanges", "text": "Le grand rendez-vous de l'automne : toute la vigne se cueille à la main, en une ou plusieurs journées conviviales.", "tag": "v"},
-    {"image": "img/banquet.jpg", "title": "Le banquet annuel", "text": "Le repas qui réunit chaque année tous les adhérents de l'association.", "tag": "c"},
-    {"image": "img/pique-nique.jpg", "title": "Rendez-vous conviviaux", "text": "Au fil des saisons, des moments partagés autour de la vigne. Programme à compléter par l'association.", "tag": "f"}
+    {
+      "image": "img/vendanges.jpg",
+      "title": "Les vendanges",
+      "text": "Le grand rendez-vous de l'automne : toute la vigne se cueille à la main, en une ou plusieurs journées conviviales.",
+      "tag": "v"
+    },
+    {
+      "image": "img/banquet.jpg",
+      "title": "Le banquet annuel",
+      "text": "Le repas qui réunit chaque année tous les adhérents de l'association.",
+      "tag": "c"
+    },
+    {
+      "image": "img/pique-nique.jpg",
+      "title": "Rendez-vous conviviaux",
+      "text": "Au fil des saisons, des moments partagés autour de la vigne. Programme à compléter par l'association.",
+      "tag": "f"
+    },
+    {
+      "image": "img/pique-nique.jpg",
+      "title": "test",
+      "text": "À compléter",
+      "tag": "f"
+    }
   ]
 }
