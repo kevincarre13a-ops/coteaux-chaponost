@@ -117,3 +117,6 @@ footer h4{color:var(--cream);font-size:1.3rem;margin-bottom:.6rem}footer a{displ
 .vidbtn{background:var(--vine)!important;color:#fff!important;border-color:var(--vine)!important}
 .videos.pulse{animation:pulse 1.2s ease}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 #5b142400}50%{box-shadow:0 0 0 8px #5b142433}}
+/* édition directe */
+.tile .tcap{display:none}
+.adminlink{color:inherit;opacity:.55;text-decoration:underline}

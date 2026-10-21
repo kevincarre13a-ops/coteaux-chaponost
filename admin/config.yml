@@ -17,7 +17,6 @@ collections:
         fields:
           - {label: "Email", name: "email", widget: "string"}
           - {label: "Téléphone affiché", name: "phone", widget: "string"}
-          - {label: "Téléphone (format +33616241682, pour le bouton d'appel)", name: "phone_tel", widget: "string"}
           - {label: "Lien Facebook", name: "facebook_url", widget: "string"}
           - {label: "Adresse — ligne 1", name: "address_line1", widget: "string"}
           - {label: "Adresse — ligne 2", name: "address_line2", widget: "string"}
