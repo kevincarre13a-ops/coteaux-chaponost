@@ -23,7 +23,7 @@ h1 [contenteditable=true],h2 [contenteditable=true],h3 [contenteditable=true],h4
 .cc-imgbtn{position:absolute;top:10px;left:10px;z-index:30;background:#fff;color:#2b2018;border:3px solid #2e7d32;border-radius:12px;padding:12px 16px;font:700 17px Jost,sans-serif;cursor:pointer;box-shadow:0 3px 12px #0005}
 .hero>.cc-imgbtn,.band>.cc-imgbtn{top:120px;right:16px;left:auto}
 body.editing img[data-ei],body.editing img[data-fi]{cursor:pointer;outline:3px dashed #2e7d32;outline-offset:-3px}
-.cc-del{position:absolute;top:8px;right:8px;z-index:30;background:#b3261e;color:#fff;border:0;border-radius:10px;padding:9px 13px;font:700 15px Jost,sans-serif;cursor:pointer;box-shadow:0 2px 8px #0005}
+.cc-del{position:static;z-index:30;background:#b3261e;color:#fff;border:0;border-radius:10px;padding:9px 13px;font:700 15px Jost,sans-serif;cursor:pointer;box-shadow:0 2px 8px #0005}
 .cc-delcell{width:1%;white-space:nowrap}
 .cc-delcell .cc-del{position:static;box-shadow:none}
 .cc-tag{position:absolute;right:8px;bottom:36px;z-index:30;font:600 15px Jost,sans-serif;padding:6px;border-radius:8px}
@@ -75,3 +75,14 @@ body.editing img[data-ei],body.editing img[data-fi]{cursor:pointer;outline:3px d
   .cc-imgbtn{font-size:15px;padding:9px 12px}
   .hero>.cc-imgbtn,.band>.cc-imgbtn{top:100px}
 }
+
+/* réorganiser / vidéos / liens */
+.cc-itembar{position:static;z-index:30;display:flex;gap:6px;justify-content:flex-end;margin:0 0 8px;flex:0 0 auto}
+.tile .cc-itembar,.evcard .cc-itembar,.vid .cc-itembar{position:absolute;top:8px;right:8px;margin:0}
+.cc-itembar .cc-del,.cc-itembar .cc-mv{position:static}
+.cc-mv{background:#fff;color:#2b2018;border:2px solid #2b2018;border-radius:10px;width:44px;height:40px;font:700 20px Jost,sans-serif;cursor:pointer;box-shadow:0 2px 8px #0005}
+.cc-delcell .cc-itembar{position:static;justify-content:flex-end}
+.cc-vidbtn{top:10px;left:10px}
+.cc-big.cc-alt{background:#fff;color:#2e7d32;border:3px solid #2e7d32;box-shadow:none}
+.cc-linkbtn{display:inline-block;margin:6px 0 0 8px;background:#fff;color:#2b2018;border:2px solid #2e7d32;border-radius:10px;padding:8px 12px;font:700 15px Jost,sans-serif;cursor:pointer}
+body.editing footer .cc-linkbtn{display:block;margin:6px 0 0}

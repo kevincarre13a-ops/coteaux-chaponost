@@ -8,7 +8,7 @@ l'édition directe sur le site :
   data-list="page|chemin"  liste d'éléments      data-item data-oi="n" = un élément
   data-fd="champ"          texte d'un élément    data-fi="champ" = photo d'un élément
 """
-import os, json, html, re
+import os, json, html, re, hashlib
 from urllib.parse import quote
 
 OUT = os.path.dirname(os.path.abspath(__file__))
@@ -25,9 +25,14 @@ def esc(o):
     return o
 
 
+TEXTS = {}  # textes modifiés sur le site : TEXTS[page][id] = valeur
+
+
 def load(name):
     with open(os.path.join(CDIR, f"{name}.json"), encoding="utf-8") as f:
-        return esc(json.load(f))
+        raw = json.load(f)
+    TEXTS[name] = raw.get("t", {}) if isinstance(raw.get("t", {}), dict) else {}
+    return esc(raw)
 
 
 SITE = load("site")
@@ -48,6 +53,33 @@ P = ""  # page courante (nom du fichier content/*.json)
 # ---------- aides d'édition directe ----------
 def E(page, path, v):
     return f'<span data-e="{page}|{path}">{v}</span>'
+
+
+def _m(h):
+    """HTML (<br>, <em>) -> marqueurs (\\n, *mot*)"""
+    h = h.replace("<br>", "\n")
+    return re.sub(r"<em>(.*?)</em>", r"*\1*", h)
+
+
+def _rich(s):
+    s = re.sub(r"\*([^*\n]+)\*", r"<em>\1</em>", s)
+    return s.replace("\n", "<br>")
+
+
+def T(default, rich=False, page=None):
+    """Texte fixe du site, modifiable en édition directe (valeur enregistrée dans content/<page>.json > t)."""
+    if "data-e=" in default:
+        return default
+    pg = page or P
+    tid = hashlib.sha1(default.encode("utf-8")).hexdigest()[:8]
+    if rich:
+        default = _m(default)
+    val = TEXTS.get(pg, {}).get(tid)
+    if val is None:
+        inner = _rich(default) if rich else default
+    else:
+        inner = _rich(html.escape(val)) if rich else html.escape(val)
+    return f'<span data-e="{pg}|t.{tid}"{" data-rich" if rich else ""}>{inner}</span>'
 
 
 def paras(text):
@@ -86,25 +118,25 @@ FOOT = f'''</main><footer><div class="fwrap"><div><a class="brand light" href="i
 <div><h4>Le site</h4>{"".join(f'<a href="{h}">{t}</a>' for h,t in NAV)}</div>
 <div><h4>Liens</h4><a href="https://www.chaponost.fr" target="_blank" rel="noopener">Mairie de Chaponost</a>
 <a href="https://www.coteaux-du-lyonnais.com" target="_blank" rel="noopener">Coteaux du Lyonnais</a><a href="mentions-legales.html">Mentions légales</a></div>
-<div><h4>Nous écrire</h4><p>{E("site","address_line1",SITE["address_line1"])}<br>{E("site","address_line2",SITE["address_line2"])}<br>{E("site","address_line3",SITE["address_line3"])}</p><p><a href="mailto:{SITE["email"]}">{E("site","email",SITE["email"])}</a><br><a href="tel:{SITE["phone_tel"]}">{E("site","phone",SITE["phone"])}</a></p><p><a href="{SITE["facebook_url"]}" target="_blank" rel="noopener">Suivez-nous sur Facebook →</a></p></div></div>
+<div><h4>Nous écrire</h4><p>{E("site","address_line1",SITE["address_line1"])}<br>{E("site","address_line2",SITE["address_line2"])}<br>{E("site","address_line3",SITE["address_line3"])}</p><p><a href="mailto:{SITE["email"]}">{E("site","email",SITE["email"])}</a><br><a href="tel:{SITE["phone_tel"]}">{E("site","phone",SITE["phone"])}</a></p><p><a href="{SITE["facebook_url"]}" data-href="site|facebook_url" target="_blank" rel="noopener">Suivez-nous sur Facebook →</a></p></div></div>
 <p class="legal">L'abus d'alcool est dangereux pour la santé, à consommer avec modération. · Maquette de démonstration réalisée par AssoVisible. · <a class="adminlink" href="modifier/">Modifier le site</a></p></footer>
 <script src="app.js"></script><script src="edit.js" defer></script></body></html>'''
 
 
 def hero(img, kicker, h1, sub, cls="", ei=""):
-    return f'''<section class="hero {cls}" style="--bg:url({img})" {ei}><div class="hero-in"><p class="kicker">{kicker}</p><h1>{h1}</h1><p class="sub">{sub}</p></div><span class="scroll">Défiler</span></section>'''
+    return f'''<section class="hero {cls}" style="--bg:url({img})" {ei}><div class="hero-in"><p class="kicker">{T(kicker)}</p><h1>{T(h1, True)}</h1><p class="sub">{T(sub)}</p></div><span class="scroll">Défiler</span></section>'''
 
 
 def band(img, quote, who="", ei=""):
-    return f'<section class="band" style="--bg:url({img})" {ei}><blockquote>{quote}<cite>{who}</cite></blockquote></section>'
+    return f'<section class="band" style="--bg:url({img})" {ei}><blockquote>{T(quote)}<cite>{who}</cite></blockquote></section>'
 
 
 def title(kicker, h2, intro=""):
-    return f'<div class="title reveal"><p class="kicker">{kicker}</p><h2>{h2}</h2>{"<p class=intro>"+intro+"</p>" if intro else ""}</div>'
+    return f'<div class="title reveal"><p class="kicker">{T(kicker)}</p><h2>{T(h2, True)}</h2>{"<p class=intro>"+T(intro)+"</p>" if intro else ""}</div>'
 
 
 def seegalerie(tag):
-    return f'<p class="note reveal seelink"><a href="galerie.html#{tag}">Voir en images dans la galerie →</a></p>'
+    return f'<p class="note reveal seelink"><a href="galerie.html#{tag}">{T("Voir en images dans la galerie →")}</a></p>'
 
 
 FLASH = f'''<div id="flash" class="flash"><p>📅 N'oubliez pas <b>{E("site","flash_event",SITE["flash_event"])}</b> le <b>{E("site","flash_date",SITE["flash_date"])}</b>. <a href="agenda.html">Voir l'agenda →</a></p><button class="flash-x" aria-label="Fermer">×</button></div>'''
@@ -116,21 +148,21 @@ P = "index"; c = load(P)
 pages["index.html"] = (head("Accueil", c["meta_desc"], "index.html") +
 FLASH +
 hero(c["hero_image"], E(P, "hero_kicker", c["hero_kicker"]), "Les Coteaux<br><em>de Chaponost</em>", E(P, "hero_sub", c["hero_sub"]), "bright", EI(P, "hero_image")) +
-f'''<section class="wrap welcome reveal"><p class="kicker">Mot de bienvenue</p><p class="lead">{E(P,"welcome_text",c["welcome_text"])}</p></section>
-<section class="wrap chiffres reveal"><div><b data-n="130">130</b><span>adhérents bénévoles</span></div><div><b data-n="400">400</b><span>bouteilles par an</span></div><div><b>2</b><span>vins, blanc &amp; rouge</span></div><div><b>1</b><span>dernière vigne du village</span></div></section>
-<section class="next wrap reveal"><div class="label"><span class="tag">À ne pas manquer</span><p class="hand">Prochain rendez-vous</p><p>{E(P,"next_text",c["next_text"])}</p></div>
-<a class="btn" href="agenda.html">Voir tout l'agenda</a></section>
-<section class="wrap shortcuts">''' + title("Le site en un coup d'œil", "Découvrir les Coteaux") + '''<div class="cards shortcuts-grid">
-<a class="card reveal" href="association.html"><i>01</i><h3>L'association</h3><p>Histoire, bureau, vie associative.</p></a>
-<a class="card reveal" href="la-vigne.html"><i>02</i><h3>La vigne</h3><p>Parcelle, cépages, travaux, nos vins.</p></a>
-<a class="card reveal" href="cerisaie.html"><i>03</i><h3>La Cerisaie</h3><p>Le verger et les confitures maison.</p></a>
-<a class="card reveal" href="agenda.html"><i>04</i><h3>Agenda</h3><p>Toutes les dates à venir.</p></a>
-<a class="card reveal" href="evenements.html"><i>05</i><h3>Événements</h3><p>Nos rendez-vous en photos.</p></a>
-<a class="card reveal" href="galerie.html"><i>06</i><h3>Galerie</h3><p>Photos &amp; vidéos de la vigne.</p></a></div></section>
-<section class="wrap split">''' + f'''<div class="reveal"><p class="kicker">Notre histoire</p><h2>Une vigne sauvée<br>par ceux qui l'aiment</h2>
-{EM(P,"history_text",c["history_text"])}<a class="btn" href="association.html">Découvrir l'association</a></div>
-<figure class="reveal"><img src="{c["history_image"]}" {EI(P,"history_image")} alt="Adhérents réunis autour d'un repas" loading="lazy"><figcaption>La vie de l'association</figcaption></figure></section>
-<section class="cta"><h2>Une question, une envie de nous rejoindre ?</h2><p>{E(P,"cta_text",c["cta_text"])}</p><a class="btn light" href="contact.html">Nous écrire</a></section>''' + FOOT)
+f'''<section class="wrap welcome reveal"><p class="kicker">{T("Mot de bienvenue")}</p><p class="lead">{E(P,"welcome_text",c["welcome_text"])}</p></section>
+<section class="wrap chiffres reveal"><div><b data-n="130">130</b><span>{T("adhérents bénévoles")}</span></div><div><b data-n="400">400</b><span>{T("bouteilles par an")}</span></div><div><b>2</b><span>{T("vins, blanc &amp; rouge")}</span></div><div><b>1</b><span>{T("dernière vigne du village")}</span></div></section>
+<section class="next wrap reveal"><div class="label"><span class="tag">{T("À ne pas manquer")}</span><p class="hand">{T("Prochain rendez-vous")}</p><p>{E(P,"next_text",c["next_text"])}</p></div>
+<a class="btn" href="agenda.html">{T("Voir tout l'agenda")}</a></section>
+<section class="wrap shortcuts">''' + title("Le site en un coup d'œil", "Découvrir les Coteaux") + f'''<div class="cards shortcuts-grid">
+<a class="card reveal" href="association.html"><i>01</i><h3>{T("L'association")}</h3><p>{T("Histoire, bureau, vie associative.")}</p></a>
+<a class="card reveal" href="la-vigne.html"><i>02</i><h3>{T("La vigne")}</h3><p>{T("Parcelle, cépages, travaux, nos vins.")}</p></a>
+<a class="card reveal" href="cerisaie.html"><i>03</i><h3>{T("La Cerisaie")}</h3><p>{T("Le verger et les confitures maison.")}</p></a>
+<a class="card reveal" href="agenda.html"><i>04</i><h3>{T("Agenda")}</h3><p>{T("Toutes les dates à venir.")}</p></a>
+<a class="card reveal" href="evenements.html"><i>05</i><h3>{T("Événements")}</h3><p>{T("Nos rendez-vous en photos.")}</p></a>
+<a class="card reveal" href="galerie.html"><i>06</i><h3>{T("Galerie")}</h3><p>{T("Photos &amp; vidéos de la vigne.")}</p></a></div></section>
+<section class="wrap split">''' + f'''<div class="reveal"><p class="kicker">{T("Notre histoire")}</p><h2>{T("Une vigne sauvée<br>par ceux qui l'aiment", True)}</h2>
+{EM(P,"history_text",c["history_text"])}<a class="btn" href="association.html">{T("Découvrir l'association")}</a></div>
+<figure class="reveal"><img src="{c["history_image"]}" {EI(P,"history_image")} alt="Adhérents réunis autour d'un repas" loading="lazy"><figcaption>{T("La vie de l'association")}</figcaption></figure></section>
+<section class="cta"><h2>{T("Une question, une envie de nous rejoindre ?")}</h2><p>{E(P,"cta_text",c["cta_text"])}</p><a class="btn light" href="contact.html">{T("Nous écrire")}</a></section>''' + FOOT)
 
 # ---------- ASSOCIATION
 P = "association"; c = load(P)
@@ -141,11 +173,11 @@ hero(c["hero_image"], "L'association", "Sauvegarder la<br><em>dernière vigne</e
 '<section class="wrap">' + title("Historique", "Une vigne, une histoire") +
 f'''<div class="split"><div class="reveal">{EM(P,"history_text",c["history_text"])}
 <p><small><i>{E(P,"history_note",c["history_note"])}</i></small></p></div>
-<figure class="reveal"><img src="{c["history_image"]}" {EI(P,"history_image")} alt="Trois adhérents taillent la vigne" loading="lazy"><figcaption>Taille de printemps</figcaption></figure></div></section>''' +
+<figure class="reveal"><img src="{c["history_image"]}" {EI(P,"history_image")} alt="Trois adhérents taillent la vigne" loading="lazy"><figcaption>{T("Taille de printemps")}</figcaption></figure></div></section>''' +
 band("img/caisses.jpg", "130 adhérents, des retraités aux plus jeunes : la vigne se cultive à plusieurs mains.") +
-f'<section class="wrap word reveal"><div class="paper"><p class="hand big">Le mot du Bureau</p><p>{E(P,"word_text",c["word_text"])}</p><p class="sign">— {E(P,"word_signature",c["word_signature"])}<br><small><i>texte de démonstration, à valider par l\'association</i></small></p></div></section>' +
+f'<section class="wrap word reveal"><div class="paper"><p class="hand big">{T("Le mot du Bureau")}</p><p>{E(P,"word_text",c["word_text"])}</p><p class="sign">— {E(P,"word_signature",c["word_signature"])}<br><small><i>texte de démonstration, à valider par l\'association</i></small></p></div></section>' +
 '<section class="wrap">' + title("Composition", "Bureau, Conseil d'administration &amp; commissions", "Composition à faire valider par l'association — tous les champs ci-dessous sont des exemples à remplacer.") +
-f'''<div class="fiche reveal"><div><span>Président(e)</span><b>{E(P,"president",c["president"])}</b></div><div><span>Vice-président(e)</span><b>{E(P,"vice_president",c["vice_president"])}</b></div><div><span>Trésorier(ère)</span><b>{E(P,"treasurer",c["treasurer"])}</b></div><div><span>Secrétaire</span><b>{E(P,"secretary",c["secretary"])}</b></div><div><span>Membres du CA</span><b>{E(P,"board_members",c["board_members"])}</b></div><div><span>Commissions</span><b>{E(P,"commissions",c["commissions"])}</b></div></div></section>
+f'''<div class="fiche reveal"><div><span>{T("Président(e)")}</span><b>{E(P,"president",c["president"])}</b></div><div><span>{T("Vice-président(e)")}</span><b>{E(P,"vice_president",c["vice_president"])}</b></div><div><span>{T("Trésorier(ère)")}</span><b>{E(P,"treasurer",c["treasurer"])}</b></div><div><span>{T("Secrétaire")}</span><b>{E(P,"secretary",c["secretary"])}</b></div><div><span>{T("Membres du CA")}</span><b>{E(P,"board_members",c["board_members"])}</b></div><div><span>{T("Commissions")}</span><b>{E(P,"commissions",c["commissions"])}</b></div></div></section>
 <section class="wrap">''' + title("Organisation", "Le rythme de l'année associative") +
 f'<ul class="tl reveal" style="max-width:760px;margin:2rem auto 0" data-list="{P}|org_items">{org_items}</ul></section>' +
 '<section class="wrap">' + title("Presse", "On parle de nous", "Aucun article n'a été retrouvé à ce jour : les parutions presse (Le Progrès, Le Pays, bulletin municipal…) pourront être ajoutées ici au fur et à mesure.") +
@@ -165,21 +197,21 @@ _loc = html.unescape(c["loc_location"])
 _maps = "https://www.google.com/maps/search/?api=1&amp;query=" + quote(_loc)
 pages["la-vigne.html"] = (head("La vigne", c["meta_desc"], "la-vigne.html") +
 hero(c["hero_image"], "Notre parcelle", "La <em>dernière vigne</em><br>du village", "Un coteau, des rangs de ceps, et des mains qui savent.", "short", EI(P, "hero_image")) +
-'<section class="wrap split">' + f'''<div class="reveal"><p class="kicker">Le terroir</p><h2>Les Coteaux du Lyonnais</h2>
+'<section class="wrap split">' + f'''<div class="reveal"><p class="kicker">{T("Le terroir")}</p><h2>{T("Les Coteaux du Lyonnais")}</h2>
 {EM(P,"terroir_text",c["terroir_text"])}</div>
-<figure class="reveal"><img src="{c["terroir_image"]}" {EI(P,"terroir_image")} alt="La parcelle sous la neige" loading="lazy"><figcaption>La parcelle en hiver</figcaption></figure></section>
+<figure class="reveal"><img src="{c["terroir_image"]}" {EI(P,"terroir_image")} alt="La parcelle sous la neige" loading="lazy"><figcaption>{T("La parcelle en hiver")}</figcaption></figure></section>
 <section class="wrap">''' + title("Notre parcelle", "Fiche d'identité", "Les éléments ci-dessous sont modulables : l'association peut les compléter.") +
-f'''<div class="fiche reveal"><div><span>Localisation</span><b>{E(P,"loc_location",c["loc_location"])}</b></div><div><span>Surface</span><b>{E(P,"loc_surface",c["loc_surface"])}</b></div><div><span>Exposition</span><b>{E(P,"loc_exposition",c["loc_exposition"])}</b></div><div><span>Année de plantation</span><b>{E(P,"loc_plantation_year",c["loc_plantation_year"])}</b></div><div><span>Appellation</span><b>{E(P,"loc_appellation",c["loc_appellation"])}</b></div><div><span>Production</span><b>{E(P,"loc_production",c["loc_production"])}</b></div></div></section>
+f'''<div class="fiche reveal"><div><span>{T("Localisation")}</span><b>{E(P,"loc_location",c["loc_location"])}</b></div><div><span>{T("Surface")}</span><b>{E(P,"loc_surface",c["loc_surface"])}</b></div><div><span>{T("Exposition")}</span><b>{E(P,"loc_exposition",c["loc_exposition"])}</b></div><div><span>{T("Année de plantation")}</span><b>{E(P,"loc_plantation_year",c["loc_plantation_year"])}</b></div><div><span>{T("Appellation")}</span><b>{E(P,"loc_appellation",c["loc_appellation"])}</b></div><div><span>{T("Production")}</span><b>{E(P,"loc_production",c["loc_production"])}</b></div></div></section>
 <section class="wrap">''' + title("Où se trouve la vigne", E(P, "loc_location", c["loc_location"])) +
-f'''<div class="duo mapshots reveal"><figure><img src="{c["loc_sat_image"]}" {EI(P,"loc_sat_image")} alt="Vue satellite de la parcelle"><figcaption>Vue satellite — la parcelle est indiquée par la flèche</figcaption></figure>
-<figure><img src="{c["loc_plan_image"]}" {EI(P,"loc_plan_image")} alt="Plan de situation de la parcelle"><figcaption>Plan de situation</figcaption></figure></div>
+f'''<div class="duo mapshots reveal"><figure><img src="{c["loc_sat_image"]}" {EI(P,"loc_sat_image")} alt="Vue satellite de la parcelle"><figcaption>{T("Vue satellite — la parcelle est indiquée par la flèche")}</figcaption></figure>
+<figure><img src="{c["loc_plan_image"]}" {EI(P,"loc_plan_image")} alt="Plan de situation de la parcelle"><figcaption>{T("Plan de situation")}</figcaption></figure></div>
 <p class="note reveal seelink"><a target="_blank" rel="noopener" href="{_maps}">Ouvrir le plan interactif →</a></p></section>
 <section class="wrap">''' + title("Les cépages", "Présentation des cépages") +
-f'''<div class="duo"><div class="grape white reveal"><h3>Vin blanc</h3><p>{E(P,"white_text",c["white_text"])}</p></div><div class="grape red reveal"><h3>Vin rouge</h3><p>{E(P,"red_text",c["red_text"])}</p></div></div></section>''' +
+f'''<div class="duo"><div class="grape white reveal"><h3>{T("Vin blanc")}</h3><p>{E(P,"white_text",c["white_text"])}</p></div><div class="grape red reveal"><h3>{T("Vin rouge")}</h3><p>{E(P,"red_text",c["red_text"])}</p></div></div></section>''' +
 band(c["band_image"], E(P, "band_text", c["band_text"]), "", EI(P, "band_image")) +
 '<section class="wrap">' + title("Travaux de la vigne", "Les gestes de l'année", "Dates et saisonnalité données à titre indicatif ; à ajuster avec l'association.") +
 f'''<ol class="steps" data-list="{P}|steps">{steps}</ol>
-<div class="split" style="margin-top:2.4rem"><figure class="reveal"><img src="{c["step_image1"]}" {EI(P,"step_image1")} alt="Taille de la vigne" loading="lazy"><figcaption>Taille</figcaption></figure><figure class="reveal"><img src="{c["step_image2"]}" {EI(P,"step_image2")} alt="Le pressoir" loading="lazy"><figcaption>Pressage</figcaption></figure></div>
+<div class="split" style="margin-top:2.4rem"><figure class="reveal"><img src="{c["step_image1"]}" {EI(P,"step_image1")} alt="Taille de la vigne" loading="lazy"><figcaption>{T("Taille")}</figcaption></figure><figure class="reveal"><img src="{c["step_image2"]}" {EI(P,"step_image2")} alt="Le pressoir" loading="lazy"><figcaption>{T("Pressage")}</figcaption></figure></div>
 {seegalerie("t")}</section>
 <section class="wrap">''' + title("Notre vigneron partenaire", "Un professionnel à nos côtés", "L'association est accompagnée par un vigneron partenaire pour le conseil technique et la vinification. Présentation à fournir par l'association.") +
 f'''<div class="paper reveal" style="max-width:760px;margin:2rem auto 0"><p><b>Nom du vigneron / domaine</b> : {E(P,"vigneron_name",c["vigneron_name"])}<br><b>Rôle auprès de l'association</b> : {E(P,"vigneron_role",c["vigneron_role"])}<br><b>Présentation</b> : {E(P,"vigneron_text",c["vigneron_text"])}</p></div></section>
@@ -192,13 +224,13 @@ f'''<div class="tablewrap reveal"><table><thead><tr><th>Millésime</th><th>Blanc
 P = "cerisaie"; c = load(P)
 pages["cerisaie.html"] = (head("La Cerisaie", c["meta_desc"], "cerisaie.html") +
 hero(c["hero_image"], "Le verger", "La <em>Cerisaie</em>", "Nos cerisiers, et les confitures qui en naissent.", "short", EI(P, "hero_image")) +
-'<section class="wrap split">' + f'''<div class="reveal"><p class="kicker">Le verger</p><h2>Un verger de cerisiers</h2>
+'<section class="wrap split">' + f'''<div class="reveal"><p class="kicker">{T("Le verger")}</p><h2>{T("Un verger de cerisiers")}</h2>
 <p>{E(P,"intro_text",c["intro_text"])}</p>
 <p><small><i>{E(P,"intro_note",c["intro_note"])}</i></small></p></div>
-<figure class="reveal"><img src="{c["intro_image"]}" {EI(P,"intro_image")} alt="Cerises du verger" loading="lazy"><figcaption>Cerises du verger</figcaption></figure></section>
+<figure class="reveal"><img src="{c["intro_image"]}" {EI(P,"intro_image")} alt="Cerises du verger" loading="lazy"><figcaption>{T("Cerises du verger")}</figcaption></figure></section>
 <section class="wrap">''' + title("La confiture maison", "Préparée en commun, vendue par l'association") +
-f'''<div class="split"><figure class="reveal"><img src="{c["confiture_image"]}" {EI(P,"confiture_image")} alt="Préparation de la confiture de cerises en commun" loading="lazy"><figcaption>Préparation des confitures</figcaption></figure>
-<div class="reveal paper cotis"><p class="hand big">Vente de confiture</p><p><b>Prix du pot</b> : {E(P,"price",c["price"])}<br><b>Points de vente</b> : {E(P,"points_de_vente",c["points_de_vente"])}<br><b>Période de vente</b> : {E(P,"periode",c["periode"])}</p><p>Pour réserver des pots ou en savoir plus, <a href="contact.html">contactez l'association</a>.</p></div></div>
+f'''<div class="split"><figure class="reveal"><img src="{c["confiture_image"]}" {EI(P,"confiture_image")} alt="Préparation de la confiture de cerises en commun" loading="lazy"><figcaption>{T("Préparation des confitures")}</figcaption></figure>
+<div class="reveal paper cotis"><p class="hand big">{T("Vente de confiture")}</p><p><b>{T("Prix du pot")}</b> : {E(P,"price",c["price"])}<br><b>{T("Points de vente")}</b> : {E(P,"points_de_vente",c["points_de_vente"])}<br><b>{T("Période de vente")}</b> : {E(P,"periode",c["periode"])}</p><p>Pour réserver des pots ou en savoir plus, <a href="contact.html">contactez l'association</a>.</p></div></div>
 ''' + seegalerie("f") + '</section>' + FOOT)
 
 # ---------- AGENDA
@@ -221,23 +253,50 @@ hero(c["hero_image"], "Nos rendez-vous", "<em>Événements</em>", "Les moments q
 f'<div class="evcards" data-list="{P}|cards">{evcards}</div>' + seegalerie("c") + '</section>' + FOOT)
 
 # ---------- GALERIE
+def video_embed(url):
+    u = html.unescape(url or "")
+    m = re.search(r"(?:youtu\.be/|youtube\.com/(?:watch\?(?:[^#]*&)?v=|shorts/|embed/|live/))([\w-]{11})", u)
+    if m:
+        return "https://www.youtube-nocookie.com/embed/" + m.group(1)
+    m = re.search(r"vimeo\.com/(?:video/)?(\d+)", u)
+    if m:
+        return "https://player.vimeo.com/video/" + m.group(1)
+    if "facebook.com" in u or "fb.watch" in u:
+        return "https://www.facebook.com/plugins/video.php?show_text=false&amp;href=" + quote(u, safe="")
+    return None
+
+
+def video_item(i, v):
+    emb = video_embed(v.get("youtube"))
+    cap = F("caption", v["caption"])
+    attrs = f'data-item data-oi="{i}" data-youtube="{v.get("youtube", "")}" data-file="{v.get("file", "")}"'
+    if emb:
+        return f'<div class="vid real reveal" {attrs}><div class="vframe"><iframe src="{emb}" allowfullscreen loading="lazy" title="Vidéo"></iframe></div><p>{cap}</p></div>'
+    if v.get("file"):
+        poster = f' poster="{v["poster"]}"' if v.get("poster") else ""
+        return f'<div class="vid real reveal" {attrs}><video controls preload="metadata"{poster}><source src="{v["file"]}" type="video/mp4"></video><p>{cap}</p></div>'
+    bg = v.get("bg") or "img/vendanges.jpg"
+    return f'<div class="vid reveal" style="--bg:url({bg})" {attrs}><button aria-label="Lecture"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><p>{cap}</p></div>'
+
+
 P = "galerie"; c = load(P)
 TAGLABEL = {"v": "Vendanges", "t": "Travaux", "f": "Festivités", "c": "Événements"}
 tiles = "".join(f'<a class="tile reveal" href="{t["image"]}" data-item data-oi="{i}" data-cat="{t["tag"]}" data-tag="{t["tag"]}" data-cap="{t["caption"]}"><img src="{t["image"]}" data-fi="image" alt="{t["caption"]}" loading="lazy"><span class="tlabel">{TAGLABEL.get(t["tag"], "")}</span><em class="tcap" data-fd="caption">{t["caption"]}</em></a>' for i, t in enumerate(c["tiles"]))
+videos = "".join(video_item(i, v) for i, v in enumerate(c["videos"]))
 pages["galerie.html"] = (head("Galerie photos & vidéos", c["meta_desc"], "galerie.html") +
 hero(c["hero_image"], "Photos & vidéos", "La vigne <em>en images</em>", "Travaux, vendanges, festivités, événements.", "short", EI(P, "hero_image")) +
 f'''<section class="wrap"><p class="note reveal">{E(P,"note_text",c["note_text"])}</p>
-<div class="filters reveal"><button class="on" data-f="all">Tout</button><button data-f="t">Travaux</button><button data-f="v">Vendanges</button><button data-f="f">Festivités</button><button data-f="c">Événements</button><button class="vidbtn" data-f="vid">▶ Vidéos</button></div>
+<div class="filters reveal"><button class="on" data-f="all">{T("Tout")}</button><button data-f="t">{T("Travaux")}</button><button data-f="v">{T("Vendanges")}</button><button data-f="f">{T("Festivités")}</button><button data-f="c">{T("Événements")}</button><button class="vidbtn" data-f="vid">▶ {T("Vidéos")}</button></div>
 <div class="grid" data-list="{P}|tiles">''' + tiles + '''</div></section>
 <section class="wrap">''' + title("Vidéos", "Les vignes en mouvement", E(P, "video_note", c["video_note"])) +
-f'''<div class="videos"><div class="vid real reveal"><video controls preload="none" poster="{c["video_poster"]}"><source src="{c["video_file"]}" type="video/mp4"></video><p>{E(P,"video_caption",c["video_caption"])}</p></div><div class="vid reveal" style="--bg:url(img/vendanges.jpg)"><button aria-label="Lecture"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><p>Vendanges — vidéo à venir</p></div><div class="vid reveal" style="--bg:url(img/banquet.jpg)"><button aria-label="Lecture"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><p>Banquet annuel — vidéo à venir</p></div></div></section>
+f'''<div class="videos" data-list="{P}|videos">{videos}</div></section>
 <div class="lightbox" id="lb"><button class="x" aria-label="Fermer">×</button><img alt=""><p></p></div>''' + FOOT)
 
 # ---------- CONTACT
 P = "contact"; c = load(P)
 pages["contact.html"] = (head("Contact", c["meta_desc"], "contact.html") +
 hero(c["hero_image"], "Nous écrire", "<em>Contact</em>", "Une question, une envie de vendanger ? Écrivez-nous.", "short", EI(P, "hero_image")) +
-'<section class="wrap split">' + f'''<div class="reveal"><p class="kicker">Coordonnées</p><h2>Nous contacter</h2>
+'<section class="wrap split">' + f'''<div class="reveal"><p class="kicker">{T("Coordonnées")}</p><h2>{T("Nous contacter")}</h2>
 <ul class="coords"><li><b>Email</b><a href="mailto:{SITE["email"]}">{E("site","email",SITE["email"])}</a></li><li><b>Téléphone</b><a href="tel:{SITE["phone_tel"]}">{E("site","phone",SITE["phone"])}</a></li><li><b>Siège</b>{E("site","address_line1",SITE["address_line1"])}<br>{E("site","address_line2",SITE["address_line2"])}<br>{E("site","address_line3",SITE["address_line3"])}</li></ul>
 <a class="btn" target="_blank" rel="noopener" href="https://www.openstreetmap.org/search?query=1%20bis%20rue%20Martel%2069630%20Chaponost">Voir sur la carte</a></div>
 <form class="form paper reveal" name="contact" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot"><input type="hidden" name="form-name" value="contact"><p class="hp"><input name="bot"></p>

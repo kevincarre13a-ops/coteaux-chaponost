@@ -40,6 +40,7 @@
     if (fl) { fl.classList.add('show'); if (hd) hd.style.top = fl.offsetHeight + 'px'; }
 
     makeEditable(document);
+    setupLinks();
     document.querySelectorAll('[data-ei],[data-fi]').forEach(addImgBtn);
     document.querySelectorAll('[data-list]').forEach(setupList);
     document.querySelectorAll('a.tile').forEach(function (a) { a.removeAttribute('href'); });
@@ -59,10 +60,13 @@
   function bindText(n, multi) {
     if (n.__b) return; n.__b = 1;
     n.contentEditable = 'true'; n.spellcheck = true; n.setAttribute('lang', 'fr');
+    if (n.hasAttribute('data-e') && !multi) n.__o = n.hasAttribute('data-rich') ? richText(n) : txt(n);
+    var rich = n.hasAttribute('data-rich');
     n.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         e.preventDefault();
-        if (multi) {
+        if (rich) { document.execCommand('insertLineBreak'); }
+        else if (multi) {
           var p = document.createElement('p'); bindText(p, true);
           n.parentNode.insertBefore(p, n.nextSibling); p.focus();
         } else { n.blur(); }
@@ -74,14 +78,14 @@
     n.addEventListener('paste', function (e) {
       e.preventDefault();
       var t = (e.clipboardData || window.clipboardData).getData('text');
-      if (!multi) t = t.replace(/\s*\n\s*/g, ' ');
+      if (!multi && !rich) t = t.replace(/\s*\n\s*/g, ' ');
       document.execCommand('insertText', false, t);
     });
     n.addEventListener('input', function () {
       dirty = true;
       var k = n.getAttribute('data-e');
       if (k && !multi) {
-        document.querySelectorAll('[data-e="' + k + '"]').forEach(function (o) { if (o !== n) o.textContent = n.textContent; });
+        document.querySelectorAll('[data-e="' + k + '"]').forEach(function (o) { if (o !== n) { if (rich) o.innerHTML = n.innerHTML; else o.textContent = n.textContent; } });
       }
     });
   }
@@ -138,16 +142,31 @@
 
   function decorateItem(it) {
     if (it.__d) return; it.__d = 1;
-    var b = el('button', { type: 'button', 'class': 'cc-ctl cc-del' }, '✖ Supprimer');
-    b.addEventListener('click', function (e) {
-      e.preventDefault(); e.stopPropagation();
+    var grp = el('div', { 'class': 'cc-ctl cc-itembar' });
+    function mk(cls, label, title, fn) {
+      var b = el('button', { type: 'button', 'class': cls, title: title, 'aria-label': title }, label);
+      b.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); fn(); });
+      grp.appendChild(b);
+    }
+    mk('cc-mv', '⬆', 'Monter', function () {
+      var prev = it.previousElementSibling;
+      while (prev && !prev.hasAttribute('data-item')) prev = prev.previousElementSibling;
+      if (prev) { it.parentNode.insertBefore(it, prev); dirty = true; it.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    });
+    mk('cc-mv', '⬇', 'Descendre', function () {
+      var next = it.nextElementSibling;
+      while (next && !next.hasAttribute('data-item')) next = next.nextElementSibling;
+      if (next) { it.parentNode.insertBefore(next, it); dirty = true; it.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    });
+    mk('cc-del', '✖ Supprimer', 'Supprimer', function () {
       if (it.parentNode.querySelectorAll(':scope > [data-item]').length < 2) { alert('Il doit rester au moins un élément.'); return; }
       if (confirm('Supprimer cet élément ?')) { it.remove(); dirty = true; }
     });
     if (it.tagName === 'TR') {
-      var td = el('td', { 'class': 'cc-ctl cc-delcell' }); td.appendChild(b); it.appendChild(td);
-    } else { it.appendChild(b); }
+      var td = el('td', { 'class': 'cc-ctl cc-delcell' }); td.appendChild(grp); it.appendChild(td);
+    } else { it.appendChild(grp); }
     if (it.classList.contains('tile')) addTagSelect(it);
+    if (it.hasAttribute('data-youtube')) addVideoBtn(it);
   }
 
   function addTagSelect(it) {
@@ -172,12 +191,101 @@
     c.querySelectorAll('[contenteditable]').forEach(function (x) { x.removeAttribute('contenteditable'); });
     c.querySelectorAll('[data-fd]').forEach(function (x) { x.textContent = x.getAttribute('data-fd') === 'caption' ? 'Nouvelle photo' : 'À compléter'; });
     c.dataset.oi = src.dataset.oi;
+    if (c.hasAttribute('data-youtube')) {   // nouvelle vidéo : on repart d'un emplacement vide
+      var cap = c.querySelector('[data-fd="caption"]');
+      Array.prototype.slice.call(c.children).forEach(function (x) { if (x !== cap.parentNode) x.remove(); });
+      var ph = document.createElement('button'); ph.setAttribute('aria-label', 'Lecture');
+      ph.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+      c.insertBefore(ph, cap.parentNode);
+      c.classList.remove('real'); c.style.setProperty('--bg', 'url(img/vendanges.jpg)');
+      c.setAttribute('data-youtube', ''); c.setAttribute('data-file', ''); c.dataset.youtube = ''; c.dataset.file = '';
+      cap.textContent = 'Nouvelle vidéo';
+    }
     list.appendChild(c);
     makeEditable(c);
     c.querySelectorAll('[data-fi]').forEach(addImgBtn);
     decorateItem(c);
     dirty = true;
     c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  /* ---------- liens modifiables ---------- */
+  function setupLinks() {
+    document.querySelectorAll('a[data-href]').forEach(function (a) {
+      var b = el('button', { type: 'button', 'class': 'cc-ctl cc-linkbtn' }, '🔗 Changer ce lien');
+      b.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        var v = prompt('Collez ici la nouvelle adresse du lien (par exemple celle de votre page Facebook) :', a.getAttribute('href'));
+        if (v && v.trim()) {
+          v = v.trim(); if (!/^(https?:|mailto:|tel:)/.test(v)) v = 'https://' + v;
+          document.querySelectorAll('a[data-href="' + a.getAttribute('data-href') + '"]').forEach(function (x) { x.setAttribute('href', v); });
+          dirty = true; status('Lien changé. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok');
+        }
+      });
+      a.insertAdjacentElement('afterend', b);
+    });
+  }
+
+  /* ---------- vidéos : lien YouTube / Vimeo / Facebook, ou petit fichier ---------- */
+  function embedUrl(u) {
+    var m = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:[^#]*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/);
+    if (m) return 'https://www.youtube-nocookie.com/embed/' + m[1];
+    m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if (m) return 'https://player.vimeo.com/video/' + m[1];
+    if (/facebook\.com|fb\.watch/.test(u)) return 'https://www.facebook.com/plugins/video.php?show_text=false&href=' + encodeURIComponent(u);
+    return null;
+  }
+  function addVideoBtn(it) {
+    var b = el('button', { type: 'button', 'class': 'cc-ctl cc-imgbtn cc-vidbtn' }, '🎬 Choisir la vidéo');
+    b.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); videoDialog(it); });
+    it.appendChild(b);
+  }
+  function setVideoMedia(it, node) {
+    var cap = it.querySelector('[data-fd="caption"]');
+    Array.prototype.slice.call(it.children).forEach(function (c) {
+      if (c !== cap.parentNode && !c.classList.contains('cc-ctl')) c.remove();
+    });
+    it.insertBefore(node, cap.parentNode);
+    it.classList.add('real'); it.style.removeProperty('--bg');
+  }
+  function videoDialog(it) {
+    var h = el('div', { 'class': 'cc-help' });
+    h.innerHTML = '<div class="cc-help-card"><h2>Choisir la vidéo</h2>' +
+      '<p>Le plus simple : mettez votre vidéo sur <b>YouTube</b> ou <b>Facebook</b>, puis collez ici son adresse.</p>' +
+      '<button type="button" class="cc-big cc-v-link">🔗 Coller un lien (YouTube, Facebook, Vimeo)</button>' +
+      '<button type="button" class="cc-big cc-v-file cc-alt">📁 Envoyer un fichier vidéo (4 Mo maximum)</button>' +
+      '<button type="button" class="cc-link cc-v-cancel">Annuler</button></div>';
+    document.body.appendChild(h);
+    h.querySelector('.cc-v-cancel').onclick = function () { h.remove(); };
+    h.querySelector('.cc-v-link').onclick = function () {
+      var v = prompt('Collez ici l’adresse de la vidéo :');
+      if (!v) return;
+      v = v.trim(); var emb = embedUrl(v);
+      if (!emb) { alert('Cette adresse n’est pas reconnue. Utilisez un lien YouTube, Facebook ou Vimeo.'); return; }
+      var d = document.createElement('div'); d.className = 'vframe';
+      d.innerHTML = '<iframe allowfullscreen title="Vidéo"></iframe>'; d.firstChild.src = emb;
+      setVideoMedia(it, d);
+      it.dataset.youtube = v; it.dataset.file = ''; it._vb64 = null; it._vpath = null;
+      dirty = true; h.remove(); status('Vidéo choisie. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok');
+    };
+    h.querySelector('.cc-v-file').onclick = function () {
+      var inp = el('input', { type: 'file', accept: 'video/mp4,video/webm,video/quicktime' });
+      inp.addEventListener('change', function () {
+        var f = inp.files[0]; if (!f) return;
+        if (f.size > 4200000) { alert('Cette vidéo est trop lourde (' + (f.size / 1048576).toFixed(1).replace('.', ',') + ' Mo). Le plus simple : la mettre sur YouTube ou Facebook, puis coller son adresse.'); return; }
+        var r = new FileReader();
+        r.onload = function () {
+          var ext = /webm/.test(f.type) ? 'webm' : 'mp4';
+          it._vpath = 'img/video-' + Date.now() + '.' + ext; it._vb64 = String(r.result).split(',')[1];
+          var v = document.createElement('video'); v.controls = true; v.src = r.result;
+          setVideoMedia(it, v);
+          it.dataset.file = it._vpath; it.dataset.youtube = '';
+          dirty = true; h.remove(); status('Vidéo prête. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok');
+        };
+        r.readAsDataURL(f);
+      });
+      inp.click();
+    };
   }
 
   /* ---------- clics : empêcher la navigation pendant l'édition ---------- */
@@ -188,7 +296,7 @@
     if (im) { e.preventDefault(); e.stopPropagation(); pick(im); return; }
     if (t.closest('.cc-ctl')) { if (t.closest('a')) e.preventDefault(); return; }
     var a = t.closest('a');
-    if (a && (a.classList.contains('tile') || a.querySelector('[data-e],[data-fd],[data-fi],[data-ei]'))) {
+    if (a && (a.hasAttribute('data-href') || a.classList.contains('tile') || a.querySelector('[data-e],[data-fd],[data-fi],[data-ei]'))) {
       e.preventDefault();
       if (a.classList.contains('tile')) e.stopPropagation();
     }
@@ -228,7 +336,8 @@
       '<div class="cc-help-card"><h2>Comment modifier votre site</h2><ol>' +
       '<li><b>Un texte ?</b> Cliquez dessus, puis écrivez. C’est tout.</li>' +
       '<li><b>Une photo ?</b> Cliquez sur la photo (ou sur « 📷 Changer la photo »), puis choisissez-en une sur votre appareil.</li>' +
-      '<li><b>Ajouter ou supprimer une ligne ?</b> Utilisez les boutons « ➕ Ajouter » et « ✖ Supprimer » qui apparaissent.</li>' +
+      '<li><b>Ajouter, supprimer ou déplacer une ligne ?</b> Utilisez les boutons « ➕ Ajouter », « ✖ Supprimer » et les flèches ⬆ ⬇ qui apparaissent.</li>' +
+      '<li><b>Un titre ?</b> Cliquez dessus et écrivez. Pour mettre un mot en italique doré, entourez-le d’étoiles : *comme ceci*.</li>' +
       '<li><b>Terminer ?</b> Cliquez sur le gros bouton vert <b>« 💾 Enregistrer »</b> en bas de l’écran. Les changements apparaissent sur le site 1 à 2 minutes plus tard.</li>' +
       '</ol><p>Pour modifier une autre page, utilisez le menu du site comme d’habitude, puis enregistrez avant de changer de page.</p>' +
       '<button type="button" class="cc-big">J’ai compris</button></div>';
@@ -237,10 +346,21 @@
   }
 
   /* ---------- enregistrement (un seul « commit » via Git Gateway) ---------- */
+  function ser(n) {
+    var s = '';
+    n.childNodes.forEach(function (c) {
+      if (c.nodeType === 3) s += c.nodeValue;
+      else if (c.nodeName === 'BR') s += '\n';
+      else if (c.nodeName === 'EM' || c.nodeName === 'I') s += '*' + ser(c) + '*';
+      else s += ser(c);
+    });
+    return s;
+  }
+  function richText(n) { return ser(n).replace(/\u00a0/g, ' ').replace(/[ \t]+/g, ' ').replace(/ *\n */g, '\n').trim(); }
   function txt(n) { return n.textContent.replace(/ /g, ' ').replace(/\s+/g, ' ').trim(); }
   function multiText(n) { return Array.prototype.map.call(n.querySelectorAll('p'), txt).filter(Boolean).join('\n\n'); }
   function getPath(o, p) { return p.split('.').reduce(function (a, k) { return a == null ? a : a[k]; }, o); }
-  function setPath(o, p, v) { var k = p.split('.'), l = k.pop(); var t = k.reduce(function (a, x) { return a[x]; }, o); t[l] = v; }
+  function setPath(o, p, v) { var k = p.split('.'), l = k.pop(); var t = k.reduce(function (a, x) { if (a[x] == null) a[x] = {}; return a[x]; }, o); t[l] = v; }
   function b64dec(s) {
     var bin = atob(s.replace(/\s/g, '')), u = new Uint8Array(bin.length);
     for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
@@ -285,6 +405,7 @@
       document.querySelectorAll('[data-e]').forEach(function (n) { need(n.getAttribute('data-e')); });
       document.querySelectorAll('[data-list]').forEach(function (n) { need(n.getAttribute('data-list')); });
       document.querySelectorAll('[data-ei]').forEach(function (n) { need(n.getAttribute('data-ei')); });
+      document.querySelectorAll('a[data-href]').forEach(function (n) { need(n.getAttribute('data-href')); });
       var names = Object.keys(files), docs = {}, orig = {};
       for (var i = 0; i < names.length; i++) {
         var r = await gh(token, '/contents/content/' + names[i] + '.json?ref=main');
@@ -296,7 +417,13 @@
       document.querySelectorAll('[data-e]').forEach(function (n) {
         var k = n.getAttribute('data-e'); if (seen[k]) return; seen[k] = 1;
         var p = k.split('|');
-        setPath(docs[p[0]], p[1], n.hasAttribute('data-multi') ? multiText(n) : txt(n));
+        var val = n.hasAttribute('data-multi') ? multiText(n) : (n.hasAttribute('data-rich') ? richText(n) : txt(n));
+        if (/^t\./.test(p[1]) && val === n.__o) return;   // titre/texte fixe non modifié : on ne l'enregistre pas
+        setPath(docs[p[0]], p[1], val);
+      });
+      document.querySelectorAll('a[data-href]').forEach(function (a) {
+        var p = a.getAttribute('data-href').split('|');
+        setPath(docs[p[0]], p[1], a.getAttribute('href'));
       });
       document.querySelectorAll('[data-ei]').forEach(function (n) {
         if (!n._path) return;
@@ -316,6 +443,11 @@
             if (x._b64) imgs[x._path] = x._b64;
           });
           if (it.dataset.tag) o.tag = it.dataset.tag;
+          if (it.hasAttribute('data-youtube')) {
+            o.youtube = it.getAttribute('data-youtube') || '';
+            if (it._vpath) { o.file = it._vpath; o.poster = ''; if (it._vb64) imgs[it._vpath] = it._vb64; }
+            else if (!o.youtube && it.getAttribute('data-file')) o.file = it.getAttribute('data-file');
+          }
           arr.push(o);
         });
         setPath(docs[p[0]], p[1], arr);
@@ -345,7 +477,7 @@
       document.querySelectorAll('[data-list]').forEach(function (l) {
         Array.prototype.forEach.call(l.querySelectorAll(':scope > [data-item]'), function (it, idx) { it.dataset.oi = idx; });
       });
-      document.querySelectorAll('[data-ei],[data-fi]').forEach(function (n) { n._b64 = null; });
+      document.querySelectorAll('[data-ei],[data-fi],[data-item]').forEach(function (n) { n._b64 = null; n._vb64 = null; });
       dirty = false;
       status('✅ Enregistré ! Vos modifications seront visibles sur le site dans 1 à 2 minutes.', 'ok');
     } catch (err) {
