@@ -23,6 +23,29 @@
     return;
   }
 
+  /* dialogue intégré : dialog({title, text, input, buttons:[{label,value,primary}]}) -> Promise(valeur du bouton ; texte saisi si input) */
+  function dialog(o) {
+    return new Promise(function (res) {
+      var h = el('div', { 'class': 'cc-help cc-dlg' });
+      h.innerHTML = '<div class="cc-help-card"><h2></h2><p></p>' + (o.input !== undefined ? '<input class="cc-dlg-in" type="text">' : '') + '<div class="cc-dlg-btns"></div></div>';
+      h.querySelector('h2').textContent = o.title || '';
+      var p = h.querySelector('p'); if (o.text) p.textContent = o.text; else p.remove();
+      var inp = h.querySelector('input'); if (inp) inp.value = o.input || '';
+      var box = h.querySelector('.cc-dlg-btns');
+      (o.buttons || [{ label: 'OK', value: true, primary: true }]).forEach(function (b) {
+        var bt = el('button', { type: 'button', 'class': b.primary ? 'cc-big' : 'cc-big cc-alt' });
+        bt.textContent = b.label;
+        bt.addEventListener('click', function () { h.remove(); res(inp && b.value === true ? inp.value : b.value); });
+        box.appendChild(bt);
+      });
+      document.body.appendChild(h);
+      if (inp) { inp.focus(); inp.select(); }
+    });
+  }
+  function yesNo(title, text, yes, no) {
+    return dialog({ title: title, text: text, buttons: [{ label: yes, value: true, primary: true }, { label: no, value: false }] });
+  }
+
   var dirty = false, saving = false;
   var statusEl, saveBtn;
 
@@ -159,8 +182,10 @@
       if (next) { it.parentNode.insertBefore(next, it); dirty = true; it.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
     });
     mk('cc-del', '✖ Supprimer', 'Supprimer', function () {
-      if (it.parentNode.querySelectorAll(':scope > [data-item]').length < 2) { alert('Il doit rester au moins un élément.'); return; }
-      if (confirm('Supprimer cet élément ?')) { it.remove(); dirty = true; }
+      if (it.parentNode.querySelectorAll(':scope > [data-item]').length < 2) { dialog({ title: 'Impossible de supprimer', text: 'Il doit rester au moins un élément dans cette liste.' }); return; }
+      yesNo('Supprimer cet élément ?', 'Il disparaîtra du site après l’enregistrement.', 'Oui, supprimer', 'Non, le garder').then(function (ok) {
+        if (ok) { it.remove(); dirty = true; status('Élément supprimé. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok'); }
+      });
     });
     if (it.tagName === 'TR') {
       var td = el('td', { 'class': 'cc-ctl cc-delcell' }); td.appendChild(grp); it.appendChild(td);
@@ -215,12 +240,14 @@
       var b = el('button', { type: 'button', 'class': 'cc-ctl cc-linkbtn' }, '🔗 Changer ce lien');
       b.addEventListener('click', function (e) {
         e.preventDefault(); e.stopPropagation();
-        var v = prompt('Collez ici la nouvelle adresse du lien (par exemple celle de votre page Facebook) :', a.getAttribute('href'));
-        if (v && v.trim()) {
-          v = v.trim(); if (!/^(https?:|mailto:|tel:)/.test(v)) v = 'https://' + v;
-          document.querySelectorAll('a[data-href="' + a.getAttribute('data-href') + '"]').forEach(function (x) { x.setAttribute('href', v); });
-          dirty = true; status('Lien changé. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok');
-        }
+        dialog({ title: 'Changer ce lien', text: 'Collez ici la nouvelle adresse (par exemple celle de votre page Facebook) :', input: a.getAttribute('href'),
+          buttons: [{ label: 'Valider', value: true, primary: true }, { label: 'Annuler', value: null }] }).then(function (v) {
+          if (v && v.trim()) {
+            v = v.trim(); if (!/^(https?:|mailto:|tel:)/.test(v)) v = 'https://' + v;
+            document.querySelectorAll('a[data-href="' + a.getAttribute('data-href') + '"]').forEach(function (x) { x.setAttribute('href', v); });
+            dirty = true; status('Lien changé. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok');
+          }
+        });
       });
       a.insertAdjacentElement('afterend', b);
     });
@@ -258,21 +285,24 @@
     document.body.appendChild(h);
     h.querySelector('.cc-v-cancel').onclick = function () { h.remove(); };
     h.querySelector('.cc-v-link').onclick = function () {
-      var v = prompt('Collez ici l’adresse de la vidéo :');
-      if (!v) return;
-      v = v.trim(); var emb = embedUrl(v);
-      if (!emb) { alert('Cette adresse n’est pas reconnue. Utilisez un lien YouTube, Facebook ou Vimeo.'); return; }
-      var d = document.createElement('div'); d.className = 'vframe';
-      d.innerHTML = '<iframe allowfullscreen title="Vidéo"></iframe>'; d.firstChild.src = emb;
-      setVideoMedia(it, d);
-      it.dataset.youtube = v; it.dataset.file = ''; it._vb64 = null; it._vpath = null;
-      dirty = true; h.remove(); status('Vidéo choisie. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok');
+      h.remove();
+      dialog({ title: 'Lien de la vidéo', text: 'Collez ici l’adresse de la vidéo (YouTube, Facebook ou Vimeo) :', input: '',
+        buttons: [{ label: 'Valider', value: true, primary: true }, { label: 'Annuler', value: null }] }).then(function (v) {
+        if (!v || !v.trim()) return;
+        v = v.trim(); var emb = embedUrl(v);
+        if (!emb) { dialog({ title: 'Adresse non reconnue', text: 'Utilisez un lien YouTube, Facebook ou Vimeo.' }); return; }
+        var d = document.createElement('div'); d.className = 'vframe';
+        d.innerHTML = '<iframe allowfullscreen title="Vidéo"></iframe>'; d.firstChild.src = emb;
+        setVideoMedia(it, d);
+        it.dataset.youtube = v; it.dataset.file = ''; it._vb64 = null; it._vpath = null;
+        dirty = true; status('Vidéo choisie. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok');
+      });
     };
     h.querySelector('.cc-v-file').onclick = function () {
       var inp = el('input', { type: 'file', accept: 'video/mp4,video/webm,video/quicktime' });
       inp.addEventListener('change', function () {
         var f = inp.files[0]; if (!f) return;
-        if (f.size > 4200000) { alert('Cette vidéo est trop lourde (' + (f.size / 1048576).toFixed(1).replace('.', ',') + ' Mo). Le plus simple : la mettre sur YouTube ou Facebook, puis coller son adresse.'); return; }
+        if (f.size > 4200000) { h.remove(); dialog({ title: 'Vidéo trop lourde', text: 'Cette vidéo pèse ' + (f.size / 1048576).toFixed(1).replace('.', ',') + ' Mo (maximum 4 Mo). Le plus simple : la mettre sur YouTube ou Facebook, puis coller son adresse.' }); return; }
         var r = new FileReader();
         r.onload = function () {
           var ext = /webm/.test(f.type) ? 'webm' : 'mp4';
@@ -321,11 +351,16 @@
     saveBtn.addEventListener('click', save);
     bar.querySelector('.cc-help-btn').addEventListener('click', showHelp);
     bar.querySelector('.cc-quit').addEventListener('click', function () {
-      if (dirty && !confirm('Vous avez des changements non enregistrés. Quitter quand même ?')) return;
-      dirty = false;
-      var out = confirm('Voulez-vous aussi vous déconnecter ?\n\nOK = me déconnecter\nAnnuler = rester connecté (le bouton « Modifier le site » restera disponible)');
-      try { sessionStorage.removeItem(EDIT); if (out) localStorage.removeItem(AUTH); } catch (e) {}
-      location.reload();
+      var step2 = function () {
+        dialog({ title: 'Quitter le mode modification', text: 'Voulez-vous aussi vous déconnecter ?', buttons: [
+          { label: 'Oui, me déconnecter', value: 'out', primary: true }, { label: 'Non, rester connecté', value: 'stay' }] }).then(function (v) {
+          dirty = false;
+          try { sessionStorage.removeItem(EDIT); if (v === 'out') localStorage.removeItem(AUTH); } catch (e) {}
+          location.reload();
+        });
+      };
+      if (dirty) yesNo('Changements non enregistrés', 'Si vous quittez maintenant, vos changements seront perdus.', 'Quitter quand même', 'Revenir à mon travail').then(function (ok) { if (ok) step2(); });
+      else step2();
     });
   }
 
