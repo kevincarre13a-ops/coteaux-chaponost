@@ -106,11 +106,38 @@ def F(field, v):
     return f'<span data-fd="{field}">{v}</span>'
 
 
+DOMAIN = "https://lescoteauxdechaponost.com"
+SEO_NAME = "Les Coteaux de Chaponost"
+
+
+def seo(title, desc, page):
+    slug = "merci.html" if title == "Merci" else ("mentions-legales.html" if title == "Mentions légales" else page)
+    url = DOMAIN + "/" + ("" if slug in ("index.html", "") else slug)
+    img = DOMAIN + "/img/hero-automne.jpg"
+    robots = '<meta name="robots" content="noindex,follow">' if title == "Merci" else '<meta name="robots" content="index,follow,max-image-preview:large">'
+    ld = ""
+    if page == "index.html":
+        ld = '<script type="application/ld+json">' + json.dumps({
+            "@context": "https://schema.org", "@type": "Organization", "name": SEO_NAME,
+            "alternateName": "Association Les Coteaux de Chaponost", "url": DOMAIN + "/",
+            "logo": DOMAIN + "/img/vendangeur.png", "image": img,
+            "description": "Association loi 1901 qui cultive la dernière vigne de Chaponost (Rhône) : vendanges, vin, cerisaie et événements conviviaux.",
+            "email": SITE["email"], "telephone": SITE["phone_tel"],
+            "address": {"@type": "PostalAddress", "streetAddress": "Maison des Associations, 1 bis rue Martel", "postalCode": "69630", "addressLocality": "Chaponost", "addressCountry": "FR"},
+            "sameAs": [SITE["facebook_url"]]}, ensure_ascii=False) + '</script>'
+    return (f'<link rel="canonical" href="{url}">{robots}'
+            f'<meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="{SEO_NAME}">'
+            f'<meta property="og:title" content="{title} · {SEO_NAME}"><meta property="og:description" content="{desc}">'
+            f'<meta property="og:url" content="{url}"><meta property="og:image" content="{img}">'
+            f'<meta name="twitter:card" content="summary_large_image">{ld}')
+
+
 def head(title, desc, page):
     nav = "".join(f'<a href="{h}"{" class=on" if h==page else ""}>{t}</a>' for h, t in NAV)
     return f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="cc-rev" content='{REV}'>
 <title>{title} · Les Coteaux de Chaponost</title><meta name="description" content="{desc}">
+{seo(title, desc, page)}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Caveat:wght@500;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css"></head><body>
@@ -322,6 +349,12 @@ pages["mentions-legales.html"] = (head("Mentions légales", "Mentions légales d
 
 for name, html_ in pages.items():
     open(os.path.join(OUT, name), "w", encoding="utf-8").write(html_)
+_urls = [n for n in pages if n not in ("merci.html",)]
+open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    "".join(f'<url><loc>{DOMAIN}/{"" if n == "index.html" else n}</loc></url>\n' for n in _urls) + '</urlset>\n')
+open(os.path.join(OUT, "robots.txt"), "w", encoding="utf-8").write(
+    f"User-agent: *\nAllow: /\nDisallow: /modifier/\n\nSitemap: {DOMAIN}/sitemap.xml\n")
 for old in OLD_PAGES:
     p = os.path.join(OUT, old)
     if os.path.exists(p):
