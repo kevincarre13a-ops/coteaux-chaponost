@@ -125,7 +125,7 @@ def seo(title, desc, page):
             "email": SITE["email"], "telephone": SITE["phone_tel"],
             "address": {"@type": "PostalAddress", "streetAddress": "Maison des Associations, 1 bis rue Martel", "postalCode": "69630", "addressLocality": "Chaponost", "addressCountry": "FR"},
             "sameAs": [SITE["facebook_url"]]}, ensure_ascii=False) + '</script>'
-    return (f'<link rel="canonical" href="{url}">{robots}'
+    return (f'<meta name="google-site-verification" content="Cy7CbBpABDdxkIqhF-kSL7mWsnuAoLJMIKez7eutJvc"><link rel="canonical" href="{url}">{robots}'
             f'<meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="{SEO_NAME}">'
             f'<meta property="og:title" content="{title} · {SEO_NAME}"><meta property="og:description" content="{desc}">'
             f'<meta property="og:url" content="{url}"><meta property="og:image" content="{img}">'
