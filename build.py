@@ -25,6 +25,14 @@ def esc(o):
     return o
 
 
+def _blob_sha(path):
+    b = open(path, "rb").read()
+    return hashlib.sha1(b"blob %d\0" % len(b) + b).hexdigest()
+
+
+# empreinte git de chaque content/*.json au moment du build (comparée à GitHub par le mode modification)
+REV = json.dumps({n[:-5]: _blob_sha(os.path.join(CDIR, n)) for n in sorted(os.listdir(CDIR)) if n.endswith(".json")}, separators=(",", ":"))
+
 TEXTS = {}  # textes modifiés sur le site : TEXTS[page][id] = valeur
 
 
@@ -101,6 +109,7 @@ def F(field, v):
 def head(title, desc, page):
     nav = "".join(f'<a href="{h}"{" class=on" if h==page else ""}>{t}</a>' for h, t in NAV)
     return f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="cc-rev" content='{REV}'>
 <title>{title} · Les Coteaux de Chaponost</title><meta name="description" content="{desc}">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Caveat:wght@500;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">

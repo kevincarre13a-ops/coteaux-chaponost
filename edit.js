@@ -55,10 +55,116 @@
     statusEl.className = 'cc-status' + (kind ? ' ' + kind : '');
   }
 
-  function start() {
+  var TAGLABEL = { v: 'Vendanges', t: 'Travaux', f: 'Festivités', c: 'Événements' };
+  var remote = {}, rev = {}, pub = {};   // empreintes : GitHub / page affichée / dernière mise en ligne
+
+  function pageFiles() {
+    var files = {};
+    function need(k) { files[k.split('|')[0]] = 1; }
+    document.querySelectorAll('[data-e]').forEach(function (n) { need(n.getAttribute('data-e')); });
+    document.querySelectorAll('[data-list]').forEach(function (n) { need(n.getAttribute('data-list')); });
+    document.querySelectorAll('[data-ei]').forEach(function (n) { need(n.getAttribute('data-ei')); });
+    document.querySelectorAll('a[data-href]').forEach(function (n) { need(n.getAttribute('data-href')); });
+    return Object.keys(files);
+  }
+
+  function pendingFiles() {
+    return Object.keys(remote).filter(function (f) { return remote[f] !== rev[f] && remote[f] !== pub[f]; });
+  }
+
+  function richHtml(v) {
+    var s = String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return s.replace(/\*([^*\n]+)\*/g, '<em>$1</em>').replace(/\n/g, '<br>');
+  }
+  function setImg(n, v) { if (n.tagName === 'IMG') n.src = v; else n.style.setProperty('--bg', 'url(' + v + ')'); }
+
+  function fillItem(c, o) {
+    c.querySelectorAll('[data-fd]').forEach(function (x) { if (o[x.getAttribute('data-fd')] != null) x.textContent = o[x.getAttribute('data-fd')]; });
+    c.querySelectorAll('[data-fi]').forEach(function (x) { var v = o[x.getAttribute('data-fi')]; if (v) { x.src = v; if (o.title || o.caption) x.alt = o.title || o.caption; } });
+    if (c.classList.contains('tile')) {
+      c.dataset.tag = o.tag; c.dataset.cat = o.tag; c.dataset.cap = o.caption || '';
+      var l = c.querySelector('.tlabel'); if (l) l.textContent = TAGLABEL[o.tag] || '';
+    }
+    if (c.classList.contains('evcard')) { var a = c.querySelector('a[href^="galerie.html#"]'); if (a) a.setAttribute('href', 'galerie.html#' + o.tag); }
+    if (c.hasAttribute('data-youtube')) {
+      var cap = c.querySelector('[data-fd="caption"]'), capP = cap.parentNode;
+      Array.prototype.slice.call(c.children).forEach(function (x) { if (x !== capP) x.remove(); });
+      c.setAttribute('data-youtube', o.youtube || ''); c.setAttribute('data-file', o.file || '');
+      var emb = o.youtube ? embedUrl(o.youtube) : null, node;
+      if (emb) {
+        node = document.createElement('div'); node.className = 'vframe'; node.innerHTML = '<iframe allowfullscreen title="Vidéo"></iframe>'; node.firstChild.src = emb;
+        c.className = 'vid real reveal'; c.style.removeProperty('--bg');
+      } else if (o.file) {
+        node = document.createElement('video'); node.controls = true; node.preload = 'metadata'; if (o.poster) node.poster = o.poster; node.innerHTML = '<source type="video/mp4">'; node.firstChild.src = o.file;
+        c.className = 'vid real reveal'; c.style.removeProperty('--bg');
+      } else {
+        node = document.createElement('button'); node.setAttribute('aria-label', 'Lecture'); node.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+        c.className = 'vid reveal'; c.style.setProperty('--bg', 'url(' + (o.bg || 'img/vendanges.jpg') + ')');
+      }
+      c.insertBefore(node, capP);
+    }
+  }
+
+  /* la page affichée peut être plus ancienne que le contenu enregistré : on la remet à jour */
+  function renderDoc(file, doc) {
+    document.querySelectorAll('[data-e]').forEach(function (n) {
+      var k = n.getAttribute('data-e').split('|'); if (k[0] !== file) return;
+      var v = getPath(doc, k[1]); if (v == null) return;
+      if (n.hasAttribute('data-multi')) {
+        n.innerHTML = '';
+        String(v).split('\n\n').forEach(function (t) { if (!t.trim()) return; var p = document.createElement('p'); p.textContent = t.trim(); n.appendChild(p); });
+      } else if (n.hasAttribute('data-rich')) { n.innerHTML = richHtml(v); } else { n.textContent = v; }
+    });
+    document.querySelectorAll('[data-ei]').forEach(function (n) {
+      var k = n.getAttribute('data-ei').split('|'); if (k[0] !== file) return;
+      var v = getPath(doc, k[1]); if (v) setImg(n, v);
+    });
+    document.querySelectorAll('a[data-href]').forEach(function (a) {
+      var k = a.getAttribute('data-href').split('|'); if (k[0] !== file) return;
+      var v = getPath(doc, k[1]); if (v) a.setAttribute('href', v);
+    });
+    document.querySelectorAll('[data-list]').forEach(function (l) {
+      var k = l.getAttribute('data-list').split('|'); if (k[0] !== file) return;
+      var arr = getPath(doc, k[1]); if (!Array.isArray(arr) || !arr.length) return;
+      var tpl = l.querySelector(':scope > [data-item]'); if (!tpl) return;
+      var old = Array.prototype.slice.call(l.querySelectorAll(':scope > [data-item]'));
+      var nodes = arr.map(function (o, i) { var c = tpl.cloneNode(true); c.dataset.oi = i; fillItem(c, o); return c; });
+      old.forEach(function (x) { x.remove(); });
+      nodes.forEach(function (c) { l.appendChild(c); });
+    });
+  }
+
+  async function syncWithRepo() {
+    var meta = document.querySelector('meta[name="cc-rev"]');
+    try { rev = JSON.parse(meta ? meta.content : '{}'); } catch (e) { rev = {}; }
+    try { pub = JSON.parse(localStorage.getItem('cc_pub') || '{}'); } catch (e) { pub = {}; }
+    var token = await freshToken();
+    var list = await gh(token, '/contents/content?ref=main');
+    remote = {};
+    list.forEach(function (f) { if (/\.json$/.test(f.name)) remote[f.name.replace(/\.json$/, '')] = f.sha; });
+    var files = pageFiles();
+    for (var i = 0; i < files.length; i++) {
+      var f = files[i];
+      if (remote[f] && rev[f] && remote[f] !== rev[f]) {
+        var r = await gh(token, '/contents/content/' + f + '.json?ref=main');
+        renderDoc(f, JSON.parse(b64dec(r.content)));
+      }
+    }
+  }
+
+  function begin() {
     document.body.classList.add('editing');
     document.head.appendChild(el('link', { rel: 'stylesheet', href: 'edit.css' }));
+    syncWithRepo().catch(function (e) { console.error(e); }).then(start);
+  }
 
+  function updatePending() {
+    var n = pendingFiles().length, b = document.querySelector('.cc-pub'), note = document.querySelector('.cc-pending');
+    if (b) { b.hidden = !n; }
+    if (note) { note.hidden = !n; }
+  }
+
+  function start() {
     var fl = document.getElementById('flash'), hd = document.getElementById('top');
     if (fl) { fl.classList.add('show'); if (hd) hd.style.top = fl.offsetHeight + 'px'; }
 
@@ -69,6 +175,7 @@
     document.querySelectorAll('a.tile').forEach(function (a) { a.removeAttribute('href'); });
 
     buildBar();
+    updatePending();
     try { if (!sessionStorage.getItem('cc_help')) showHelp(); } catch (e) { showHelp(); }
   }
 
@@ -342,13 +449,16 @@
     bar.innerHTML =
       '<div class="cc-hint"><b>✏️ Mode modification</b><span>Cliquez sur un texte pour le changer, ou sur une photo pour la remplacer.</span></div>' +
       '<div class="cc-status" id="cc-status" role="status" aria-live="polite"></div>' +
+      '<div class="cc-pending" hidden>⏳ Des changements enregistrés ne sont pas encore sur le site.</div>' +
       '<button type="button" class="cc-save">💾 Enregistrer</button>' +
+      '<button type="button" class="cc-pub" hidden>🚀 Mettre en ligne</button>' +
       '<button type="button" class="cc-help-btn">❓ Aide</button>' +
       '<button type="button" class="cc-quit">Quitter</button>';
     document.body.appendChild(bar);
     statusEl = bar.querySelector('#cc-status');
     saveBtn = bar.querySelector('.cc-save');
-    saveBtn.addEventListener('click', save);
+    saveBtn.addEventListener('click', function () { save(); });
+    bar.querySelector('.cc-pub').addEventListener('click', publishClick);
     bar.querySelector('.cc-help-btn').addEventListener('click', showHelp);
     bar.querySelector('.cc-quit').addEventListener('click', function () {
       var step2 = function () {
@@ -373,7 +483,9 @@
       '<li><b>Une photo ?</b> Cliquez sur la photo (ou sur « 📷 Changer la photo »), puis choisissez-en une sur votre appareil.</li>' +
       '<li><b>Ajouter, supprimer ou déplacer une ligne ?</b> Utilisez les boutons « ➕ Ajouter », « ✖ Supprimer » et les flèches ⬆ ⬇ qui apparaissent.</li>' +
       '<li><b>Un titre ?</b> Cliquez dessus et écrivez. Pour mettre un mot en italique doré, entourez-le d’étoiles : *comme ceci*.</li>' +
-      '<li><b>Terminer ?</b> Cliquez sur le gros bouton vert <b>« 💾 Enregistrer »</b> en bas de l’écran. Les changements apparaissent sur le site 1 à 2 minutes plus tard.</li>' +
+      '<li><b>Enregistrer ?</b> Cliquez sur le bouton vert <b>« 💾 Enregistrer »</b> en bas de l’écran : vos changements sont gardés, mais pas encore visibles sur le site.</li>' +
+      '<li><b>Plusieurs pages ?</b> Enregistrez, puis allez sur une autre page du site (menu) et modifiez-la de la même façon.</li>' +
+      '<li><b>Terminer ?</b> Cliquez sur le bouton orange <b>« 🚀 Mettre en ligne »</b> : tout apparaît sur le site 1 à 2 minutes plus tard, en une seule fois.</li>' +
       '</ol><p>Pour modifier une autre page, utilisez le menu du site comme d’habitude, puis enregistrez avant de changer de page.</p>' +
       '<button type="button" class="cc-big">J’ai compris</button></div>';
     h.querySelector('button').addEventListener('click', function () { h.remove(); });
@@ -428,20 +540,16 @@
     });
   }
 
-  async function save() {
-    if (saving) return;
+  async function save(opts) {
+    opts = opts || {};
+    var okSaved = false;
+    if (saving) return false;
     saving = true; saveBtn.disabled = true;
     status('Enregistrement en cours… (ne fermez pas la page)');
     try {
       var token = await freshToken();
 
-      var files = {};
-      function need(k) { files[k.split('|')[0]] = 1; }
-      document.querySelectorAll('[data-e]').forEach(function (n) { need(n.getAttribute('data-e')); });
-      document.querySelectorAll('[data-list]').forEach(function (n) { need(n.getAttribute('data-list')); });
-      document.querySelectorAll('[data-ei]').forEach(function (n) { need(n.getAttribute('data-ei')); });
-      document.querySelectorAll('a[data-href]').forEach(function (n) { need(n.getAttribute('data-href')); });
-      var names = Object.keys(files), docs = {}, orig = {};
+      var names = pageFiles(), docs = {}, orig = {};
       for (var i = 0; i < names.length; i++) {
         var r = await gh(token, '/contents/content/' + names[i] + '.json?ref=main');
         docs[names[i]] = JSON.parse(b64dec(r.content));
@@ -490,7 +598,7 @@
 
       var changed = names.filter(function (f) { return JSON.stringify(docs[f]) !== orig[f]; });
       var imgPaths = Object.keys(imgs);
-      if (!changed.length && !imgPaths.length) { status('Aucune modification à enregistrer.'); return; }
+      if (!changed.length && !imgPaths.length) { status(pendingFiles().length ? 'Rien de nouveau à enregistrer. Cliquez sur « 🚀 Mettre en ligne » pour publier ce qui est déjà enregistré.' : 'Aucune modification à enregistrer.'); return true; }
 
       var ref = await gh(token, '/git/refs/heads/main');
       var head = ref.object.sha;
@@ -502,10 +610,11 @@
       }
       for (var b = 0; b < changed.length; b++) {
         var bj = await gh(token, '/git/blobs', 'POST', { content: JSON.stringify(docs[changed[b]], null, 2) + '\n', encoding: 'utf-8' });
+        remote[changed[b]] = bj.sha;
         tree.push({ path: 'content/' + changed[b] + '.json', mode: '100644', type: 'blob', sha: bj.sha });
       }
       var nt = await gh(token, '/git/trees', 'POST', { base_tree: cm.tree.sha, tree: tree });
-      var nc = await gh(token, '/git/commits', 'POST', { message: 'Modification du site (espace de modification)', tree: nt.sha, parents: [head] });
+      var nc = await gh(token, '/git/commits', 'POST', { message: 'Modification du site (enregistrée, pas encore en ligne) [skip ci]', tree: nt.sha, parents: [head] });
       await gh(token, '/git/refs/heads/main', 'PATCH', { sha: nc.sha });
 
       // les lignes ajoutées / supprimées ont maintenant leur place définitive
@@ -513,8 +622,9 @@
         Array.prototype.forEach.call(l.querySelectorAll(':scope > [data-item]'), function (it, idx) { it.dataset.oi = idx; });
       });
       document.querySelectorAll('[data-ei],[data-fi],[data-item]').forEach(function (n) { n._b64 = null; n._vb64 = null; });
-      dirty = false;
-      status('✅ Enregistré ! Vos modifications seront visibles sur le site dans 1 à 2 minutes.', 'ok');
+      dirty = false; okSaved = true;
+      updatePending();
+      status('✅ Enregistré. Pas encore en ligne : cliquez sur « 🚀 Mettre en ligne » quand vous avez fini.', 'ok');
     } catch (err) {
       console.error(err);
       if (err && err.message === 'session') status('Votre connexion a expiré. Quittez puis reconnectez-vous (vos changements ne sont pas enregistrés).', 'err');
@@ -522,7 +632,44 @@
     } finally {
       saving = false; saveBtn.disabled = false;
     }
+    if (okSaved && !opts.silent && pendingFiles().length) {
+      var go = await yesNo('Enregistré !', 'Vos modifications sont gardées. Voulez-vous les mettre en ligne maintenant, ou modifier une autre page d’abord ?', '🚀 Mettre en ligne maintenant', 'Modifier une autre page');
+      if (go) await publish();
+    }
+    return okSaved;
   }
 
-  start();
+  /* mise en ligne : un seul « commit » sans [skip ci] = une seule publication pour toutes les pages enregistrées */
+  async function publish() {
+    if (saving) return;
+    saving = true; saveBtn.disabled = true;
+    status('Mise en ligne en cours…');
+    try {
+      var token = await freshToken();
+      var ref = await gh(token, '/git/refs/heads/main');
+      var head = ref.object.sha;
+      var cm = await gh(token, '/git/commits/' + head);
+      var nc = await gh(token, '/git/commits', 'POST', { message: 'Mise en ligne du site', tree: cm.tree.sha, parents: [head] });
+      await gh(token, '/git/refs/heads/main', 'PATCH', { sha: nc.sha });
+      pub = JSON.parse(JSON.stringify(remote));
+      try { localStorage.setItem('cc_pub', JSON.stringify(pub)); } catch (e) {}
+      updatePending();
+      status('🚀 Mise en ligne lancée ! Le site sera à jour dans 1 à 2 minutes.', 'ok');
+    } catch (err) {
+      console.error(err);
+      status(err && err.message === 'session' ? 'Votre connexion a expiré. Quittez puis reconnectez-vous.' : 'La mise en ligne n’a pas fonctionné. Réessayez dans un instant.', 'err');
+    } finally {
+      saving = false; saveBtn.disabled = false;
+    }
+  }
+
+  async function publishClick() {
+    if (saving) return;
+    if (dirty) { var ok = await save({ silent: true }); if (!ok || dirty) return; }
+    if (!pendingFiles().length) { status('Tout est déjà en ligne.'); return; }
+    var go = await yesNo('Mettre en ligne ?', 'Toutes les modifications enregistrées vont apparaître sur le site dans 1 à 2 minutes.', 'Oui, mettre en ligne', 'Pas maintenant');
+    if (go) await publish();
+  }
+
+  begin();
 })();
