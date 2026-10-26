@@ -155,7 +155,7 @@ FOOT = f'''</main><footer><div class="fwrap"><div><a class="brand light" href="i
 <div><h4>Liens</h4><a href="https://www.chaponost.fr" target="_blank" rel="noopener">Mairie de Chaponost</a>
 <a href="https://www.coteaux-du-lyonnais.com" target="_blank" rel="noopener">Coteaux du Lyonnais</a><a href="mentions-legales.html">Mentions légales</a></div>
 <div><h4>Nous écrire</h4><p>{E("site","address_line1",SITE["address_line1"])}<br>{E("site","address_line2",SITE["address_line2"])}<br>{E("site","address_line3",SITE["address_line3"])}</p><p><a href="mailto:{SITE["email"]}">{E("site","email",SITE["email"])}</a><br><a href="tel:{SITE["phone_tel"]}">{E("site","phone",SITE["phone"])}</a></p><p><a href="{SITE["facebook_url"]}" data-href="site|facebook_url" target="_blank" rel="noopener">Suivez-nous sur Facebook →</a></p></div></div>
-<p class="legal">L'abus d'alcool est dangereux pour la santé, à consommer avec modération. · Maquette de démonstration réalisée par AssoVisible. · <a class="adminlink" href="modifier/">Modifier le site</a></p></footer>
+<p class="legal">L'abus d'alcool est dangereux pour la santé, à consommer avec modération. · Site réalisé par AssoVisible. · <a class="adminlink" href="modifier/">Modifier le site</a></p></footer>
 <script src="app.js"></script><script src="edit.js" defer></script></body></html>'''
 
 
@@ -341,9 +341,9 @@ hero(c["hero_image"], "Nous écrire", "<em>Contact</em>", "Une question, une env
 # ---------- MERCI / MENTIONS
 pages["merci.html"] = (head("Merci", "Message bien reçu.", "") + '<section class="wrap merci"><p class="hand big">Merci !</p><h1>Votre message est bien parti.</h1><p>L\'association vous répondra rapidement.</p><a class="btn" href="index.html">Retour à l\'accueil</a></section>' + FOOT)
 pages["mentions-legales.html"] = (head("Mentions légales", "Mentions légales du site des Coteaux de Chaponost.", "") + f'''<section class="wrap legalp"><h1>Mentions légales</h1>
-<h3>Éditeur</h3><p>Les Coteaux de Chaponost, association loi 1901 — {SITE["address_line1"]}, {SITE["address_line2"]}, {SITE["address_line3"]}. Contact : {SITE["email"]}. RNA / SIRET : à compléter.</p>
-<h3>Statut du site</h3><p>Maquette de démonstration réalisée par AssoVisible. Les textes marqués « à compléter » ou « à confirmer » seront validés par l'association.</p>
-<h3>Crédits photos</h3><p>Photographies et vidéo transmises par l'association (aperçu, non définitif). Silhouette du vendangeur : visuel de l'association.</p>
+<h3>Éditeur</h3><p>Les Coteaux de Chaponost, association loi 1901 — {SITE["address_line1"]}, {SITE["address_line2"]}, {SITE["address_line3"]}. Contact : {SITE["email"]}.</p>
+<h3>Hébergement et nom de domaine</h3><p>Site hébergé par Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis (netlify.com). Nom de domaine enregistré auprès d'OVH SAS, 2 rue Kellermann, 59100 Roubaix (ovhcloud.com). Conception du site : AssoVisible.</p>
+<h3>Crédits photos</h3><p>Photographies et vidéo : association Les Coteaux de Chaponost. Silhouette du vendangeur : visuel de l'association.</p>
 <h3>Données personnelles</h3><p>Les informations saisies dans le formulaire de contact servent uniquement à répondre aux demandes. Droit d'accès et de rectification auprès de l'association.</p>
 <h3>Santé</h3><p>L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p></section>''' + FOOT)
 
