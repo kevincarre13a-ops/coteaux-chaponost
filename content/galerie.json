@@ -62,6 +62,11 @@
       "image": "img/panneau.jpg",
       "caption": "Le panneau de l'association",
       "tag": "c"
+    },
+    {
+      "image": "img/panneau.jpg",
+      "caption": "Nouvelle photo",
+      "tag": "c"
     }
   ],
   "video_note": "Une première vidéo en ligne ; la taille, les vendanges, le pressage et le banquet suivront.",
