@@ -140,7 +140,7 @@ def head(title, desc, page):
 {seo(title, desc, page)}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Caveat:wght@500;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"></head><body>
+<link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><link rel="stylesheet" href="style.css"></head><body>
 <header class="top" id="top"><a class="brand" href="index.html">{LOGO}<span><b>Les Coteaux</b><i>de Chaponost</i></span></a>
 <nav class="navdesktop">{nav}</nav>
 <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
@@ -365,7 +365,7 @@ os.makedirs(os.path.join(OUT, "modifier"), exist_ok=True)
 with open(os.path.join(OUT, "modifier", "index.html"), "w", encoding="utf-8") as f:
     f.write('''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Modifier le site · Les Coteaux de Chaponost</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../edit.css"></head><body class="cc-login-page">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png"><link rel="apple-touch-icon" href="../img/apple-touch-icon.png"><link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../edit.css"></head><body class="cc-login-page">
 <main class="cc-login"><img class="cc-login-logo" src="../img/vendangeur.png" alt="" width="44" height="80">
 <h1>Modifier le site</h1>
 <p class="cc-login-intro">Connectez-vous pour changer les textes et les photos du site, directement sur les pages.</p>
