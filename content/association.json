@@ -1,6 +1,6 @@
 {
   "meta_desc": "Historique, composition du bureau et du CA, organisation et actualité presse de l'association Les Coteaux de Chaponost.",
-  "hero_image": "img/photo-1793631913045-868.jpg",
+  "hero_image": "img/photo-1793632472472-795.jpg",
   "history_text": "À Chaponost, comme dans tout l'ouest lyonnais, la vigne a longtemps rythmé la vie du village. Il n'en reste aujourd'hui qu'une parcelle : la dernière. C'est pour la sauvegarder qu'est née l'association Les Coteaux de Chaponost, dont la mission est de cultiver et faire vivre ce dernier témoin du vignoble des Coteaux du Lyonnais sur la commune.\n\nDepuis, des bénévoles de tous âges — 130 adhérents aujourd'hui, majoritairement retraités mais ouverts à tous — se relaient au fil des saisons : taille, enherbement, traitements, vendanges, pressage, mise en bouteille. Chaque année, la parcelle donne environ 400 bouteilles de vin blanc et de vin rouge.",
   "history_note": "Date de création, étapes marquantes de l'histoire de la vigne et de l'association : à compléter.",
   "history_image": "img/taille.jpg",
@@ -49,6 +49,6 @@
     }
   ],
   "t": {
-    "f6484239": "Sauvegarder la\n*dernière vigne de Chaponost*"
+    "f6484239": ""
   }
 }
