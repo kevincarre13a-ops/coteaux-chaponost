@@ -9,15 +9,39 @@
       "tag": "v"
     },
     {
-      "image": "img/banquet.jpg",
-      "title": "Le banquet annuel",
-      "text": "Le repas qui réunit chaque année tous les adhérents de l'association.",
+      "image": "img/photo-1793637552790-388.jpg",
+      "title": "L'assemblée générale",
+      "text": "L'évènement qui réunit chaque année tous les adhérents de l'association chaque année en janvier.",
       "tag": "c"
+    },
+    {
+      "image": "img/photo-1793638042465-139.jpg",
+      "title": "Le Banquet de la St Vincent",
+      "text": "à la suite de l'AG, l'occasion de partager un bon moment ...",
+      "tag": "f"
     },
     {
       "image": "img/pique-nique.jpg",
       "title": "Rendez-vous conviviaux",
       "text": "Au fil des saisons, des moments partagés autour de la vigne. Programme à compléter par l'association.",
+      "tag": "f"
+    },
+    {
+      "image": "img/pique-nique.jpg",
+      "title": "À compléter",
+      "text": "À compléter",
+      "tag": "f"
+    },
+    {
+      "image": "img/pique-nique.jpg",
+      "title": "À compléter",
+      "text": "À compléter",
+      "tag": "f"
+    },
+    {
+      "image": "img/pique-nique.jpg",
+      "title": "À compléter",
+      "text": "À compléter",
       "tag": "f"
     }
   ]
