@@ -16,12 +16,30 @@
   "band_image": "img/automne.jpg",
   "band_text": "Une vigne se cultive toute l'année. Le raisin n'est que la dernière étape.",
   "steps": [
-    {"title": "Taille", "text": "Hiver (janv.–mars) — on choisit les sarments qui porteront les grappes."},
-    {"title": "Enherbement", "text": "Printemps (avril–mai) — on entretient l'herbe entre les rangs."},
-    {"title": "Traitements", "text": "Printemps / été (mai–août) — on protège la vigne, au plus juste."},
-    {"title": "Vendanges", "text": "Fin d'été / automne (sept.–oct.) — la grande journée collective."},
-    {"title": "Pressage", "text": "Octobre — on presse le raisin et on met en cuve."},
-    {"title": "Mise en bouteille", "text": "Printemps suivant — étiquette collée main, évidemment."}
+    {
+      "title": "Taille",
+      "text": "Hiver (janv.–mars) — on choisit les sarments qui porteront les grappes."
+    },
+    {
+      "title": "Enherbement",
+      "text": "Printemps (avril–mai) — on entretient l'herbe entre les rangs."
+    },
+    {
+      "title": "Traitements",
+      "text": "Printemps / été (mai–août) — on protège la vigne, au plus juste, uniquement en bio."
+    },
+    {
+      "title": "Vendanges",
+      "text": "Fin d'été, fin août ou début septembre — la grande journée collective."
+    },
+    {
+      "title": "Pressage",
+      "text": "Octobre — Le vigneron presse le raisin et le met en cuve."
+    },
+    {
+      "title": "Mise en bouteille",
+      "text": "Printemps suivant — Remises par notre vigneron"
+    }
   ],
   "step_image1": "img/taille.jpg",
   "step_image2": "img/pressoir.jpg",
@@ -33,8 +51,26 @@
   "bottle_red_cepage": "Gamay",
   "bottle_red_desc": "Notre vin rouge, élevé et mis en bouteille par les bénévoles.",
   "millesimes": [
-    {"year": "2025", "blanc": "—", "rouge": "—", "remarks": "à compléter"},
-    {"year": "2024", "blanc": "—", "rouge": "—", "remarks": "à compléter"},
-    {"year": "2023", "blanc": "—", "rouge": "—", "remarks": "à compléter"}
-  ]
+    {
+      "year": "2025",
+      "blanc": "—",
+      "rouge": "—",
+      "remarks": "à compléter"
+    },
+    {
+      "year": "2024",
+      "blanc": "—",
+      "rouge": "—",
+      "remarks": "à compléter"
+    },
+    {
+      "year": "2023",
+      "blanc": "—",
+      "rouge": "—",
+      "remarks": "à compléter"
+    }
+  ],
+  "t": {
+    "cc31f545": "Pressage (image d'autrefois ...)"
+  }
 }
