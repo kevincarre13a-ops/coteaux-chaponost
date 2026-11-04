@@ -51,9 +51,9 @@
   ],
   "step_image1": "img/taille.jpg",
   "step_image2": "img/pressoir.jpg",
-  "vigneron_name": "à compléter",
-  "vigneron_role": "à compléter",
-  "vigneron_text": "à compléter (quelques lignes sur le partenariat, depuis quand, ce qu'il apporte à la vigne de Chaponost).",
+  "vigneron_name": "Frédéric Boyer/ Le Caveau Du Milliaire à Millery.",
+  "vigneron_role": "Vinification et conseils techniques.",
+  "vigneron_text": "Frédéric Boyer assure la partie technique de la vinification et la mise en bouteilles. En effet cette opération nécessite une expertise et des équipements que nous n'avons pas.",
   "bottle_white_cepage": "Chardonnay",
   "bottle_white_desc": "Notre vin blanc, issu de la dernière vigne du village.",
   "bottle_red_cepage": "Gamay",
@@ -76,9 +76,17 @@
       "blanc": "—",
       "rouge": "—",
       "remarks": "à compléter"
+    },
+    {
+      "year": "Moyenne sur 10 ans",
+      "blanc": "À compléter",
+      "rouge": "À compléter",
+      "remarks": "À compléter"
     }
   ],
   "t": {
-    "cc31f545": "Pressage (image d'autrefois ...)"
+    "cc31f545": "Pressage (image d'autrefois ...)",
+    "98cfe6ba": "L'association est accompagnée par un vigneron partenaire pour le conseil technique et la vinification.",
+    "d34671d2": "Notre production est limitée et réservée exclusivement aux adhérents. Chaque millésime a son histoire, racontée ci-dessous."
   }
 }
