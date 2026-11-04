@@ -254,7 +254,7 @@ f'''<div class="paper reveal" style="max-width:760px;margin:2rem auto 0"><p><b>N
 <section class="wrap">''' + title("Production confidentielle", "Nos vins — 400 bouteilles en moyenne par an", "Notre production est limitée et réservée en priorité aux adhérents. Chaque millésime a son histoire, racontée ci-dessous.") +
 '<div class="vins">' + bouteille("Blanc des Coteaux", "blanc", E(P, "bottle_white_cepage", c["bottle_white_cepage"]), E(P, "bottle_white_desc", c["bottle_white_desc"])) + bouteille("Rouge des Coteaux", "rouge", E(P, "bottle_red_cepage", c["bottle_red_cepage"]), E(P, "bottle_red_desc", c["bottle_red_desc"])) + '</div>' +
 f'''<div class="tablewrap reveal"><table><thead><tr><th>Millésime</th><th>Blanc</th><th>Rouge</th><th>Remarques</th></tr></thead><tbody data-list="{P}|millesimes">{millesimes_rows}</tbody></table></div>
-<p class="note reveal">Pour réserver des bouteilles, <a href="contact.html">contactez l'association</a>.</p></section>''' + FOOT)
+<p class="note reveal">Pour déguster nos bouteilles, il faut adhérer à l'association (adhésion ou parrainage), car ces bouteilles ne peuvent pas être vendues.</p></section>''' + FOOT)
 
 # ---------- LA CERISAIE
 P = "cerisaie"; c = load(P)
@@ -265,7 +265,7 @@ hero(c["hero_image"], "Le verger", "La <em>Cerisaie</em>", "Nos cerisiers, et le
 <p><small><i>{E(P,"intro_note",c["intro_note"])}</i></small></p></div>
 <figure class="reveal"><img src="{c["intro_image"]}" {EI(P,"intro_image")} alt="Cerises du verger" loading="lazy"><figcaption>{T("Cerises du verger")}</figcaption></figure></section>
 <section class="wrap">''' + title("La confiture maison", "Préparée en commun, vendue par l'association") +
-f'''<div class="split"><figure class="reveal"><img src="{c["confiture_image"]}" {EI(P,"confiture_image")} alt="Préparation de la confiture de cerises en commun" loading="lazy"><figcaption>{T("Préparation des confitures")}</figcaption></figure>
+f'''<div class="split"><div class="pair"><figure class="reveal"><img src="{c["confiture_image"]}" {EI(P,"confiture_image")} alt="Préparation de la confiture de cerises en commun" loading="lazy"><figcaption>{T("Préparation des confitures")}</figcaption></figure>{('<figure class="reveal"><img src="'+c["confiture_image2"]+'" '+EI(P,"confiture_image2")+' alt="Un membre de l\'association chauffe le chaudron de confiture" loading="lazy"><figcaption>'+T("Le chaudron de confiture")+'</figcaption></figure>') if c.get("confiture_image2") else ""}</div>
 <div class="reveal paper cotis"><p class="hand big">{T("Vente de confiture")}</p><p><b>{T("Prix du pot")}</b> : {E(P,"price",c["price"])}<br><b>{T("Points de vente")}</b> : {E(P,"points_de_vente",c["points_de_vente"])}<br><b>{T("Période de vente")}</b> : {E(P,"periode",c["periode"])}</p><p>Pour réserver des pots ou en savoir plus, <a href="contact.html">contactez l'association</a>.</p></div></div>
 ''' + seegalerie("f") + '</section>' + FOOT)
 
