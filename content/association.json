@@ -14,24 +14,29 @@
   "commissions": "- Travaux de la vigne: Jean Michel Turmo- Événements: - Communication: - confitures: Gérard Besse",
   "org_items": [
     {
-      "date": "À définir",
+      "date": "Mensuel",
       "title": "Réunions du Conseil d'administration",
-      "text": "Fréquence des CA à préciser par l'association (ex. trimestrielle)."
+      "text": "Chaque premier mercredi du mois à 16 h à la maison des associations de Chaponost."
     },
     {
       "date": "Début d'année",
       "title": "Assemblée générale",
-      "text": "Bilan de l'année et projets, ouverte à tous les adhérents."
-    },
-    {
-      "date": "Automne",
-      "title": "Vendanges",
-      "text": "Le grand rendez-vous collectif de la vigne."
+      "text": "Bilan de l'année et projets, ouverte à tous les adhérents, ,chaque année fin janvier."
     },
     {
       "date": "Annuel",
       "title": "Banquet annuel",
-      "text": "Le repas qui réunit tous les adhérents."
+      "text": "à la suite de l'assemblée générale."
+    },
+    {
+      "date": "fin d'été",
+      "title": "Vendanges",
+      "text": "Le grand rendez-vous collectif de la vigne."
+    },
+    {
+      "date": "2 fois par an (décembre et mai)",
+      "title": "Remise des bouteilles adhésion et parrainages aux adhérents.",
+      "text": "Un samedi matin à la maison Chabroud."
     }
   ],
   "press_items": [
