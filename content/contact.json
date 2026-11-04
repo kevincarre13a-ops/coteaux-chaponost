@@ -1,4 +1,7 @@
 {
   "meta_desc": "Contacter les Coteaux de Chaponost par email, Maison des Associations, 1 bis rue Martel, 69630 Chaponost.",
-  "hero_image": "img/panneau.jpg"
+  "hero_image": "img/panneau.jpg",
+  "t": {
+    "fcb7a079": "Une question, l'envie de nous rejoindre ? Écrivez-nous."
+  }
 }
