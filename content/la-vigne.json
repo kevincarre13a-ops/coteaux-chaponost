@@ -1,44 +1,52 @@
 {
   "meta_desc": "La parcelle, le terroir, les cépages, les travaux de la vigne, le vigneron partenaire et les vins des Coteaux de Chaponost.",
   "hero_image": "img/rangs.jpg",
-  "terroir_text": "Au pied des Monts du Lyonnais, l'AOC Coteaux du Lyonnais s'étend sur les collines à l'ouest de Lyon. Sols de coteaux, expositions variées : un terroir connu pour ses rouges de gamay et ses blancs frais.\n\nLa parcelle de Chaponost en est l'un des derniers témoins sur la commune.",
+  "terroir_text": "La commune de Chaponost est située dans l'appellation \"AOC Coteaux du Lyonnais\" qui s'étend sur les collines à l'ouest de Lyon. La vigne de l'Arcelan, qui en fait partie, bénéficie d'une belle exposition pour produire du rouge en Gamay et du blanc en Chardonnay.\n\nCette parcelle est la dernière de la commune.",
   "terroir_image": "img/neige.jpg",
   "loc_location": "Chemin de l'Arcelan, 69630 Chaponost",
-  "loc_surface": "à compléter",
-  "loc_exposition": "à compléter",
-  "loc_plantation_year": "à compléter",
+  "loc_surface": "10 ares",
+  "loc_exposition": "sud ouest",
+  "loc_plantation_year": "plus de 50 ans",
   "loc_appellation": "Coteaux du Lyonnais",
-  "loc_production": "≈ 400 bouteilles / an",
+  "loc_production": "≈ 400 bouteilles / an environ",
   "loc_sat_image": "img/localisation-satellite.jpg",
   "loc_plan_image": "img/localisation-plan.jpg",
-  "white_text": "Le vin blanc des Coteaux de Chaponost est issu du chardonnay, cépage emblématique des blancs en Coteaux du Lyonnais.",
-  "red_text": "Le vin rouge est issu du gamay, cépage roi de l'appellation pour les rouges.",
+  "white_text": "Le vin blanc des Coteaux de Chaponost est issu du Chardonnay, cépage emblématique des blancs en Coteaux du Lyonnais.",
+  "red_text": "Le vin rouge est issu du Gamay, cépage roi de l'appellation pour les rouges.",
   "band_image": "img/automne.jpg",
-  "band_text": "Une vigne se cultive toute l'année. Le raisin n'est que la dernière étape.",
+  "band_text": "Une vigne se cultive toute l'année. La vendange n'est que la dernière étape.",
   "steps": [
     {
-      "title": "Taille",
-      "text": "Hiver (janv.–mars) — on choisit les sarments qui porteront les grappes."
+      "title": "Enherbement",
+      "text": "Automne —"
     },
     {
-      "title": "Enherbement",
-      "text": "Printemps (avril–mai) — on entretient l'herbe entre les rangs."
+      "title": "Buttage",
+      "text": "Au motoculteur en automne."
+    },
+    {
+      "title": "Piochage",
+      "text": "Au printemps, réalisé manuellement"
+    },
+    {
+      "title": "Taille",
+      "text": "Hiver (février –mars) — Taille Gobelet pour le Gamay, et Guyot pour le Chardonnay."
     },
     {
       "title": "Traitements",
-      "text": "Printemps / été (mai–août) — on protège la vigne, au plus juste, uniquement en bio."
+      "text": "Printemps / été (mai --- juillet) — on protège la vigne, au plus juste, uniquement en bio."
     },
     {
       "title": "Vendanges",
       "text": "Fin d'été, fin août ou début septembre — la grande journée collective."
     },
     {
-      "title": "Pressage",
-      "text": "Octobre — Le vigneron presse le raisin et le met en cuve."
+      "title": "Vinification",
+      "text": "Septembre, assurée par le vigneron dans les cuves de l'association"
     },
     {
       "title": "Mise en bouteille",
-      "text": "Printemps suivant — Remises par notre vigneron"
+      "text": "Printemps suivant — Remise des bouteilles par notre vigneron"
     }
   ],
   "step_image1": "img/taille.jpg",
