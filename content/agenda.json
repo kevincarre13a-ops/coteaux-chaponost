@@ -1,41 +1,51 @@
 {
   "meta_desc": "Toutes les dates à venir des Coteaux de Chaponost : travaux de la vigne, cerisaie, vie associative et événements festifs.",
   "hero_image": "img/rangs.jpg",
-  "note_text": "Les mois indiqués suivent le calendrier habituel de la vigne ; les dates précises sont communiquées par l'association.",
+  "note_text": "Tout au long de l'année, retrouvez la chronologie de la vie de votre association.",
   "groups": [
     {
       "anchor": "travaux",
       "heading": "Travaux de la vigne",
       "events": [
         {
+          "date": "Automne",
+          "title": "Buttage",
+          "text": "Au motoculteur"
+        },
+        {
+          "date": "Automne",
+          "title": "Enherbement",
+          "text": "pour enrichirnles sols et éviter les mauvaises herbes"
+        },
+        {
           "date": "Février –Mars",
           "title": "Taille",
           "text": "La taille est délicate, et assurée sous contrôle de notre vigneron."
         },
         {
-          "date": "Avril–Mai",
-          "title": "Enherbement",
-          "text": "Entretien de l'herbe entre les rangs."
+          "date": "Au Printemps",
+          "title": "Piochage",
+          "text": "à la main"
         },
         {
-          "date": "Mai–Août",
+          "date": "Mai–Juillet",
           "title": "Traitements",
           "text": "Soins raisonnés (en bio) de la vigne."
         },
         {
-          "date": "Sept.–Oct.",
+          "date": "Fin août",
           "title": "Vendanges",
           "text": "La grande journée collective de cueillette."
         },
         {
-          "date": "Oct.",
-          "title": "Pressage",
-          "text": "Pressage du raisin et mise en cuve."
+          "date": "Octobre.",
+          "title": "Vinification et mise en nos cuves",
+          "text": "Travail spécialisé effectué par notre vigneron"
         },
         {
-          "date": "Printemps",
-          "title": "Mise en bouteille",
-          "text": "Embouteillage et étiquetage par les bénévoles."
+          "date": "Printemps suivant",
+          "title": "Remise des bouteilles par notre vigneron",
+          "text": ""
         }
       ]
     },
@@ -44,14 +54,19 @@
       "heading": "La Cerisaie",
       "events": [
         {
-          "date": "Été",
+          "date": "Juin",
           "title": "Récolte des cerises",
-          "text": "Cueillette dans le verger, à compléter avec les dates précises."
+          "text": "Cueillette dans le verger par toute une équipe de bénévoles."
         },
         {
           "date": "Été",
           "title": "Confitures",
-          "text": "Fabrication des confitures de cerises, en commun."
+          "text": "Fabrication des confitures, cuites au chaudron \"à l'ancienne\"."
+        },
+        {
+          "date": "Toute l'année",
+          "title": "Vente des bocaux de cette délicieuse confiture.",
+          "text": "Lors de tous les événements de l'association."
         }
       ]
     },
@@ -62,12 +77,27 @@
         {
           "date": "8 décembre",
           "title": "Vente de vin chaud sur notre stand",
-          "text": ""
+          "text": "Fait maison et délicieux, toujours très apprécié ..."
         },
         {
-          "date": "À compléter",
-          "title": "",
-          "text": "À compléter"
+          "date": "Fin Janvier",
+          "title": "Banquet de la St Vincent",
+          "text": "juste après l'assemblée générale."
+        },
+        {
+          "date": "Juin",
+          "title": "Pique-nique à l'Arcelans",
+          "text": "à l'ombre des cerisiers ..."
+        },
+        {
+          "date": "fin août",
+          "title": "Vendanges sur une matinée",
+          "text": "suivies par un pique-nique regroupant tous les vendangeurs."
+        },
+        {
+          "date": "En décembre et en Mai",
+          "title": "Distribution des bouteilles aux adhérents.",
+          "text": "un samedi matin à la maison Chabroud."
         }
       ]
     },
@@ -76,14 +106,14 @@
       "heading": "Vie associative",
       "events": [
         {
-          "date": "Début d'année",
+          "date": "Fin Janvier",
           "title": "Assemblée générale",
-          "text": "Bilan de l'année et projets, ouvert à tous les adhérents."
+          "text": "Suivie du banquet traditionnel."
         },
         {
-          "date": "Annuel",
-          "title": "Banquet annuel",
-          "text": "Le grand repas qui réunit tous les adhérents."
+          "date": "Tous les mois",
+          "title": "C.A. élargi",
+          "text": "Le 1er mercredi de chaque mois."
         }
       ]
     }
