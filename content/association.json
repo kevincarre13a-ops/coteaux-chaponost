@@ -14,6 +14,11 @@
   "commissions": "- Travaux de la vigne: Jean Michel Turmo- Événements: - Communication: - confitures: Gérard Besse",
   "org_items": [
     {
+      "date": "Septembre",
+      "title": "Forum des associations",
+      "text": "Un moment de rencontre avec nos adhérents, ou de recruter de nouveaux bénévoles"
+    },
+    {
       "date": "Mensuel",
       "title": "Réunions du Conseil d'administration",
       "text": "Chaque premier mercredi du mois à 16 h à la maison des associations de Chaponost."
@@ -59,6 +64,7 @@
     "6509e814": "Vice-président(e): Anne-Marie Mazuyet",
     "a238b4a5": "Trésorier: François-Xavier Foucault",
     "295da4a9": "Secrétaire: Blandine turmo",
-    "c51e0bc1": "Commissions:"
+    "c51e0bc1": "Commissions:",
+    "14e08521": ""
   }
 }
