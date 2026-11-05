@@ -258,6 +258,11 @@ f'''<div class="tablewrap reveal"><table><thead><tr><th>Millésime</th><th>Blanc
 
 # ---------- LA CERISAIE
 P = "cerisaie"; c = load(P)
+CONF2 = ""
+if c.get("confiture_image2"):
+    CONF2 = ('<figure class="reveal"><img src="' + c["confiture_image2"] + '" ' + EI(P, "confiture_image2") +
+             ' alt="Un membre de l&#39;association chauffe le chaudron de confiture" loading="lazy"><figcaption>' +
+             T("Le chaudron de confiture") + '</figcaption></figure>')
 pages["cerisaie.html"] = (head("La Cerisaie", c["meta_desc"], "cerisaie.html") +
 hero(c["hero_image"], "Le verger", "La <em>Cerisaie</em>", "Nos cerisiers, et les confitures qui en naissent.", "short", EI(P, "hero_image")) +
 '<section class="wrap split">' + f'''<div class="reveal"><p class="kicker">{T("Le verger")}</p><h2>{T("Un verger de cerisiers")}</h2>
@@ -265,7 +270,7 @@ hero(c["hero_image"], "Le verger", "La <em>Cerisaie</em>", "Nos cerisiers, et le
 <p><small><i>{E(P,"intro_note",c["intro_note"])}</i></small></p></div>
 <figure class="reveal"><img src="{c["intro_image"]}" {EI(P,"intro_image")} alt="Cerises du verger" loading="lazy"><figcaption>{T("Cerises du verger")}</figcaption></figure></section>
 <section class="wrap">''' + title("La confiture maison", "Préparée en commun, vendue par l'association") +
-f'''<div class="split"><div class="pair"><figure class="reveal"><img src="{c["confiture_image"]}" {EI(P,"confiture_image")} alt="Préparation de la confiture de cerises en commun" loading="lazy"><figcaption>{T("Préparation des confitures")}</figcaption></figure>{('<figure class="reveal"><img src="'+c["confiture_image2"]+'" '+EI(P,"confiture_image2")+' alt="Un membre de l\'association chauffe le chaudron de confiture" loading="lazy"><figcaption>'+T("Le chaudron de confiture")+'</figcaption></figure>') if c.get("confiture_image2") else ""}</div>
+f'''<div class="split"><div class="pair"><figure class="reveal"><img src="{c["confiture_image"]}" {EI(P,"confiture_image")} alt="Préparation de la confiture de cerises en commun" loading="lazy"><figcaption>{T("Préparation des confitures")}</figcaption></figure>{CONF2}</div>
 <div class="reveal paper cotis"><p class="hand big">{T("Vente de confiture")}</p><p><b>{T("Prix du pot")}</b> : {E(P,"price",c["price"])}<br><b>{T("Points de vente")}</b> : {E(P,"points_de_vente",c["points_de_vente"])}<br><b>{T("Période de vente")}</b> : {E(P,"periode",c["periode"])}</p><p>Pour réserver des pots ou en savoir plus, <a href="contact.html">contactez l'association</a>.</p></div></div>
 ''' + seegalerie("f") + '</section>' + FOOT)
 
