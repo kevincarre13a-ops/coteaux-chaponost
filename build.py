@@ -338,8 +338,7 @@ P = "contact"; c = load(P)
 pages["contact.html"] = (head("Contact", c["meta_desc"], "contact.html") +
 hero(c["hero_image"], "Nous écrire", "<em>Contact</em>", "Une question, une envie de vendanger ? Écrivez-nous.", "short", EI(P, "hero_image")) +
 '<section class="wrap split">' + f'''<div class="reveal"><p class="kicker">{T("Coordonnées")}</p><h2>{T("Nous contacter")}</h2>
-<ul class="coords"><li><b>Email</b><a href="mailto:{SITE["email"]}">{E("site","email",SITE["email"])}</a></li><li><b>Téléphone</b><a href="tel:{SITE["phone_tel"]}">{E("site","phone",SITE["phone"])}</a></li><li><b>Siège</b>{E("site","address_line1",SITE["address_line1"])}<br>{E("site","address_line2",SITE["address_line2"])}<br>{E("site","address_line3",SITE["address_line3"])}</li></ul>
-<a class="btn" target="_blank" rel="noopener" href="https://www.openstreetmap.org/search?query=1%20bis%20rue%20Martel%2069630%20Chaponost">Voir sur la carte</a></div>
+<ul class="coords"><li><b>Email</b><a href="mailto:{SITE["email"]}">{E("site","email",SITE["email"])}</a></li><li><b>Téléphone</b><a href="tel:{SITE["phone_tel"]}">{E("site","phone",SITE["phone"])}</a></li><li><b>Siège</b>{E("site","address_line1",SITE["address_line1"])}<br>{E("site","address_line2",SITE["address_line2"])}<br>{E("site","address_line3",SITE["address_line3"])}</li></ul></div>
 <form class="form paper reveal" name="contact" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot"><input type="hidden" name="form-name" value="contact"><p class="hp"><input name="bot"></p>
 <label>Nom<input name="nom" required></label><label>Email<input type="email" name="email" required></label><label>Sujet<input name="sujet"></label><label>Message<textarea name="message" rows="5" required></textarea></label><button class="btn" type="submit">Envoyer</button></form></section>''' + FOOT)
 
