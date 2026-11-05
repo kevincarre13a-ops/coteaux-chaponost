@@ -9,11 +9,6 @@
       "tag": "v"
     },
     {
-      "image": "img/caisses.jpg",
-      "caption": "Les caisses de raisin, noir et blanc",
-      "tag": "v"
-    },
-    {
       "image": "img/banquet.jpg",
       "caption": "Repas en plein air, vue du ciel",
       "tag": "c"
@@ -61,6 +56,26 @@
     {
       "image": "img/panneau.jpg",
       "caption": "Le panneau de l'association",
+      "tag": "c"
+    },
+    {
+      "image": "img/panneau.jpg",
+      "caption": "Nouvelle photo",
+      "tag": "c"
+    },
+    {
+      "image": "img/panneau.jpg",
+      "caption": "Nouvelle photo",
+      "tag": "c"
+    },
+    {
+      "image": "img/panneau.jpg",
+      "caption": "Nouvelle photo",
+      "tag": "c"
+    },
+    {
+      "image": "img/panneau.jpg",
+      "caption": "Nouvelle photo",
       "tag": "c"
     },
     {
