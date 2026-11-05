@@ -41,7 +41,7 @@
     {
       "image": "img/pressoir.jpg",
       "caption": "Le pressoir ancien",
-      "tag": "t"
+      "tag": "v"
     },
     {
       "image": "img/confiture.jpg",
@@ -59,9 +59,14 @@
       "tag": "c"
     },
     {
-      "image": "img/panneau.jpg",
+      "image": "img/photo-1793867602931-718.jpg",
       "caption": "Nouvelle photo",
-      "tag": "c"
+      "tag": "t"
+    },
+    {
+      "image": "img/photo-1793867677569-366.jpg",
+      "caption": "Nouvelle photo",
+      "tag": "t"
     },
     {
       "image": "img/panneau.jpg",
