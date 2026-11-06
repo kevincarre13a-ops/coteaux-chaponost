@@ -269,6 +269,7 @@ hero(c["hero_image"], "Le verger", "La <em>Cerisaie</em>", "Nos cerisiers, et le
 <p>{E(P,"intro_text",c["intro_text"])}</p>
 <p><small><i>{E(P,"intro_note",c["intro_note"])}</i></small></p></div>
 <figure class="reveal"><img src="{c["intro_image"]}" {EI(P,"intro_image")} alt="Cerises du verger" loading="lazy"><figcaption>{T("Cerises du verger")}</figcaption></figure></section>
+<section class="wrap recolte"><figure class="reveal"><img src="{c["recolte_image"]}" {EI(P,"recolte_image")} alt="Cagettes de cerises fraîchement cueillies dans l'herbe" loading="lazy"><figcaption>{T("La récolte de cerises")}</figcaption></figure></section>
 <section class="wrap">''' + title("La confiture maison", "Préparée en commun, vendue par l'association") +
 f'''<div class="split"><div class="pair"><figure class="reveal"><img src="{c["confiture_image"]}" {EI(P,"confiture_image")} alt="Préparation de la confiture de cerises en commun" loading="lazy"><figcaption>{T("Préparation des confitures")}</figcaption></figure>{CONF2}</div>
 <div class="reveal paper cotis"><p class="hand big">{T("Vente de confiture")}</p><p><b>{T("Prix du pot")}</b> : {E(P,"price",c["price"])}<br><b>{T("Points de vente")}</b> : {E(P,"points_de_vente",c["points_de_vente"])}<br><b>{T("Période de vente")}</b> : {E(P,"periode",c["periode"])}</p><p>Pour réserver des pots ou en savoir plus, <a href="contact.html">contactez l'association</a>.</p></div></div>

@@ -126,3 +126,4 @@ footer h4{color:var(--cream);font-size:1.3rem;margin-bottom:.6rem}footer a{displ
 .pair{display:grid;grid-template-columns:1fr;gap:1rem}.pair:has(figure+figure){grid-template-columns:1fr 1fr}.pair:has(figure+figure) img{width:100%;aspect-ratio:4/5;object-fit:cover}@media(max-width:700px){.pair:has(figure+figure){grid-template-columns:1fr 1fr;gap:.6rem}}
 
 .hero h1,.hero .sub,.hero .kicker{text-shadow:0 2px 18px #000a,0 1px 3px #0009}
+.recolte figure{max-width:760px;margin:0 auto}.recolte figure img{aspect-ratio:4/3;transform:rotate(-1deg)}
