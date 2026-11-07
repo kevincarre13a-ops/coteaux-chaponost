@@ -49,7 +49,7 @@
       "text": "Printemps suivant — Remise des bouteilles par notre vigneron"
     }
   ],
-  "step_image1": "img/taille.jpg",
+  "step_image1": "img/photo-1794091235941-473.jpg",
   "step_image2": "img/pressoir.jpg",
   "vigneron_name": "Frédéric Boyer/ Le Caveau Du Milliaire à Millery.",
   "vigneron_role": "Vinification et conseils techniques.",
@@ -85,9 +85,10 @@
     }
   ],
   "t": {
-    "cc31f545": "Pressage (image d'autrefois ...)",
+    "cc31f545": "Le pressoir, restauré par des membres de l'association, est le symbole des vendanges d'autrefois ...",
     "98cfe6ba": "L'association est accompagnée par un vigneron partenaire pour le conseil technique et la vinification.",
     "d34671d2": "Notre production est limitée et réservée exclusivement aux adhérents. Chaque millésime a son histoire, racontée ci-dessous.",
-    "626497dd": ""
+    "626497dd": "",
+    "2b90839d": "Taille d'hiver"
   }
 }
