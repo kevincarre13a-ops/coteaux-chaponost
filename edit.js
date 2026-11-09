@@ -76,11 +76,11 @@
     var s = String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     return s.replace(/\*([^*\n]+)\*/g, '<em>$1</em>').replace(/\n/g, '<br>');
   }
-  function setImg(n, v) { if (n.tagName === 'IMG') n.src = v; else n.style.setProperty('--bg', 'url(' + v + ')'); }
+  function setImg(n, v) { if (n.tagName === 'IMG') { n.src = v; n.classList.remove('empty'); } else n.style.setProperty('--bg', 'url(' + v + ')'); }
 
   function fillItem(c, o) {
     c.querySelectorAll('[data-fd]').forEach(function (x) { if (o[x.getAttribute('data-fd')] != null) x.textContent = o[x.getAttribute('data-fd')]; });
-    c.querySelectorAll('[data-fi]').forEach(function (x) { var v = o[x.getAttribute('data-fi')]; if (v) { x.src = v; if (o.title || o.caption) x.alt = o.title || o.caption; } });
+    c.querySelectorAll('[data-fi]').forEach(function (x) { var v = o[x.getAttribute('data-fi')]; if (v) { x.src = v; x.classList.remove('empty'); if (o.title || o.caption) x.alt = o.title || o.caption; } });
     if (c.classList.contains('tile')) {
       c.dataset.tag = o.tag; c.dataset.cat = o.tag; c.dataset.cap = o.caption || '';
       var l = c.querySelector('.tlabel'); if (l) l.textContent = TAGLABEL[o.tag] || '';
@@ -249,7 +249,7 @@
       var data = c.toDataURL('image/jpeg', 0.82); URL.revokeObjectURL(url);
       var name = 'photo-' + Date.now() + '-' + Math.floor(Math.random() * 1000) + '.jpg';
       t._path = 'img/' + name; t._b64 = data.split(',')[1];
-      if (t.tagName === 'IMG') { t.src = data; } else { t.style.setProperty('--bg', 'url(' + data + ')'); }
+      if (t.tagName === 'IMG') { t.src = data; t.classList.remove('empty'); } else { t.style.setProperty('--bg', 'url(' + data + ')'); }
       dirty = true;
       status('Photo prête. N’oubliez pas de cliquer sur « Enregistrer ».', 'ok');
     };

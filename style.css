@@ -109,10 +109,17 @@ footer h4{color:var(--cream);font-size:1.3rem;margin-bottom:.6rem}footer a{displ
 .evcard img{aspect-ratio:4/3;object-fit:cover}.evcard div{padding:1.4rem}.evcard a{font:600 .85rem var(--sans);text-decoration:none}
 .seelink{text-align:center;border:0;background:none;padding:1.6rem 0 0}.seelink a{font:600 .85rem var(--sans);letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
 @media(max-width:900px){.shortcuts-grid,.evcards{grid-template-columns:1fr}}
-/* flash */
-.flash{position:fixed;top:0;left:0;right:0;z-index:70;background:var(--bord);color:var(--cream);display:flex;align-items:center;justify-content:center;gap:1rem;padding:.7rem 3rem .7rem 1.4rem;text-align:center;font-size:.92rem;box-shadow:0 2px 14px #0004;opacity:0;transform:translateY(-12px);transition:opacity .5s,transform .5s;pointer-events:none}
-.flash.show{opacity:1;transform:translateY(0);pointer-events:auto}.flash p{margin:0}.flash a{color:#f0d9a8;text-decoration:underline;white-space:nowrap}
-.flash-x{position:absolute;right:.8rem;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--cream);font-size:1.5rem;line-height:1;cursor:pointer;padding:.2rem .5rem}
+/* flash : carte « à ne pas manquer » */
+.flash{position:fixed;left:1.2rem;bottom:1.2rem;z-index:70;width:min(340px,calc(100vw - 2.4rem));background:var(--paper);border:2px solid var(--earth);outline:2px solid var(--paper);outline-offset:-8px;padding:1.7rem 1.9rem 1.4rem;box-shadow:0 10px 36px #0005;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s;pointer-events:none}
+.flash.show{opacity:1;transform:none;pointer-events:auto}
+.flash .hand{font-size:1.9rem;line-height:1.1;margin:.35rem 0 .2rem}.flash .when{margin:0 0 .7rem;font-weight:600}
+.flash a{color:var(--bord);text-decoration:underline}
+.flash-x{position:absolute;right:.5rem;top:.35rem;background:none;border:0;color:var(--earth);font-size:1.7rem;line-height:1;cursor:pointer;padding:.2rem .5rem}
+@media(max-width:600px){.flash{left:.8rem;right:.8rem;bottom:.8rem;width:auto;padding:1.2rem 1.4rem 1rem}.flash .hand{font-size:1.5rem}}
+.label p{margin:.3rem 0}.note p{margin:.25rem 0}
+.pimg{display:block;width:100%;max-height:420px;object-fit:contain;margin-top:1rem;border:1px solid #d9c8a4;background:#fff;cursor:zoom-in}.pimg.empty{display:none}
+body.editing .pimg.empty{display:block;min-height:120px;border:3px dashed #2e7d32;cursor:pointer}
+body.editing .flash{bottom:150px}
 /* galerie vidéos */
 .vidbtn{background:var(--vine)!important;color:#fff!important;border-color:var(--vine)!important}
 .videos.pulse{animation:pulse 1.2s ease}

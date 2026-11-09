@@ -175,7 +175,7 @@ def seegalerie(tag):
     return f'<p class="note reveal seelink"><a href="galerie.html#{tag}">{T("Voir en images dans la galerie →")}</a></p>'
 
 
-FLASH = f'''<div id="flash" class="flash"><p>📅 N'oubliez pas <b>{E("site","flash_event",SITE["flash_event"])}</b> le <b>{E("site","flash_date",SITE["flash_date"])}</b>. <a href="agenda.html">Voir l'agenda →</a></p><button class="flash-x" aria-label="Fermer">×</button></div>'''
+FLASH = f'''<aside id="flash" class="flash"><button class="flash-x" aria-label="Fermer">×</button><span class="tag">À ne pas manquer</span><p class="hand">{E("site","flash_event",SITE["flash_event"])}</p><p class="when">{E("site","flash_date",SITE["flash_date"])}</p><a href="agenda.html">Voir l'agenda →</a></aside>'''
 
 pages = {}
 
@@ -186,7 +186,7 @@ FLASH +
 hero(c["hero_image"], E(P, "hero_kicker", c["hero_kicker"]), "Les Coteaux<br><em>de Chaponost</em>", E(P, "hero_sub", c["hero_sub"]), "bright", EI(P, "hero_image")) +
 f'''<section class="wrap welcome reveal"><p class="kicker">{T("Mot de bienvenue")}</p><p class="lead">{E(P,"welcome_text",c["welcome_text"])}</p></section>
 <section class="wrap chiffres reveal"><div><b data-n="130">130</b><span>{T("adhérents bénévoles")}</span></div><div><b data-n="400">400</b><span>{T("bouteilles par an")}</span></div><div><b>2</b><span>{T("vins, blanc &amp; rouge")}</span></div><div><b>1</b><span>{T("dernière vigne du village")}</span></div></section>
-<section class="next wrap reveal"><div class="label"><span class="tag">{T("À ne pas manquer")}</span><p class="hand">{T("Prochain rendez-vous")}</p><p>{E(P,"next_text",c["next_text"])}</p></div>
+<section class="next wrap reveal"><div class="label"><span class="tag">{T("À ne pas manquer")}</span><p class="hand">{T("Prochain rendez-vous")}</p>{EM(P,"next_text",c["next_text"])}</div>
 <a class="btn" href="agenda.html">{T("Voir tout l'agenda")}</a></section>
 <section class="wrap shortcuts">''' + title("Le site en un coup d'œil", "Découvrir les Coteaux") + f'''<div class="cards shortcuts-grid">
 <a class="card reveal" href="association.html"><i>01</i><h3>{T("L'association")}</h3><p>{T("Histoire, bureau, vie associative.")}</p></a>
@@ -203,7 +203,8 @@ f'''<section class="wrap welcome reveal"><p class="kicker">{T("Mot de bienvenue"
 # ---------- ASSOCIATION
 P = "association"; c = load(P)
 org_items = "".join(f'<li class="evt" data-item data-oi="{i}"><span class="m">{F("date",o["date"])}</span><div><h4>{F("title",o["title"])}</h4><p>{F("text",o["text"])}</p></div></li>' for i, o in enumerate(c["org_items"]))
-press_items = "".join(f'<div class="card" data-item data-oi="{i}"><i>—</i><h3>{F("title",p["title"])}</h3><p>{F("text",p["text"])}</p></div>' for i, p in enumerate(c["press_items"]))
+_BLANK = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+press_items = "".join(f'<div class="card" data-item data-oi="{i}"><i>—</i><h3>{F("title",p["title"])}</h3><p>{F("text",p["text"])}</p><img class="pimg{"" if p.get("image") else " empty"}" src="{p.get("image") or _BLANK}" data-fi="image" alt="Article de presse : {p["title"]}" loading="lazy"></div>' for i, p in enumerate(c["press_items"]))
 pages["association.html"] = (head("L'association", c["meta_desc"], "association.html") +
 hero(c["hero_image"], "L'association", "Sauvegarder la<br><em>dernière vigne</em>", "Un patrimoine viticole préservé par des bénévoles passionnés.", "short", EI(P, "hero_image")) +
 '<section class="wrap">' + title("Historique", "Une vigne, une histoire") +
@@ -211,12 +212,12 @@ f'''<div class="split"><div class="reveal">{EM(P,"history_text",c["history_text"
 <p><small><i>{E(P,"history_note",c["history_note"])}</i></small></p></div>
 <figure class="reveal"><img src="{c["history_image"]}" {EI(P,"history_image")} alt="Trois adhérents taillent la vigne" loading="lazy"><figcaption>{T("Taille de printemps")}</figcaption></figure></div></section>''' +
 band("img/caisses.jpg", "130 adhérents, des retraités aux plus jeunes : la vigne se cultive à plusieurs mains.") +
-f'<section class="wrap word reveal"><div class="paper"><p class="hand big">{T("Le mot du Bureau")}</p><p>{E(P,"word_text",c["word_text"])}</p><p class="sign">— {E(P,"word_signature",c["word_signature"])}<br><small><i>texte de démonstration, à valider par l\'association</i></small></p></div></section>' +
+f'<section class="wrap word reveal"><div class="paper"><p class="hand big">{T("Le mot du Bureau")}</p><p>{E(P,"word_text",c["word_text"])}</p><p class="sign">— {E(P,"word_signature",c["word_signature"])}</p></div></section>' +
 '<section class="wrap">' + title("Composition", "Bureau, Conseil d'administration &amp; commissions", "Composition à faire valider par l'association — tous les champs ci-dessous sont des exemples à remplacer.") +
 f'''<div class="fiche reveal"><div><span>{T("Président(e)")}</span><b>{E(P,"president",c["president"])}</b></div><div><span>{T("Vice-président(e)")}</span><b>{E(P,"vice_president",c["vice_president"])}</b></div><div><span>{T("Trésorier(ère)")}</span><b>{E(P,"treasurer",c["treasurer"])}</b></div><div><span>{T("Secrétaire")}</span><b>{E(P,"secretary",c["secretary"])}</b></div><div><span>{T("Membres du CA")}</span><b>{E(P,"board_members",c["board_members"])}</b></div><div><span>{T("Commissions")}</span><b>{E(P,"commissions",c["commissions"])}</b></div></div></section>
 <section class="wrap">''' + title("Organisation", "Le rythme de l'année associative") +
 f'<ul class="tl reveal" style="max-width:760px;margin:2rem auto 0" data-list="{P}|org_items">{org_items}</ul></section>' +
-'<section class="wrap">' + title("Presse", "On parle de nous", "Aucun article n'a été retrouvé à ce jour : les parutions presse (Le Progrès, Le Pays, bulletin municipal…) pourront être ajoutées ici au fur et à mesure.") +
+'<section class="wrap">' + title("Presse", "On parle de nous", "Les parutions presse (Le Progrès, Le Pays, bulletin municipal…) sont ajoutées ici au fur et à mesure.") +
 f'<div class="cards reveal" data-list="{P}|press_items">{press_items}</div></section>' + FOOT)
 
 
@@ -284,7 +285,7 @@ for gi, g in enumerate(c["groups"]):
     groups_html += f'<div id="{g["anchor"]}" class="axe"><h2><i>{romans[gi]}</i> {E(P, f"groups.{gi}.heading", g["heading"])}</h2><ul class="tl" data-list="{P}|groups.{gi}.events">{events}</ul></div>'
 pages["agenda.html"] = (head("Agenda", c["meta_desc"], "agenda.html") +
 hero(c["hero_image"], "Au fil de l'année", "L'<em>agenda</em>", "Toutes les dates à venir, en un seul endroit.", "short", EI(P, "hero_image")) +
-f'<section class="wrap"><p class="note reveal">{E(P,"note_text",c["note_text"])}</p>{groups_html}</section>' + FOOT)
+f'<section class="wrap"><div class="note reveal">{EM(P,"note_text",c["note_text"])}</div>{groups_html}</section>' + FOOT)
 
 # ---------- EVENEMENTS
 P = "evenements"; c = load(P)

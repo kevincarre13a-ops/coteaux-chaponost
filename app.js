@@ -14,10 +14,9 @@ const lb=document.getElementById('lb');if(lb){document.querySelectorAll('.tile')
 if(location.hash){const k=location.hash.slice(1),btn=document.querySelector(`[data-f="${k}"]`);if(btn)btn.click()}
 const flash=document.getElementById('flash');
 if(flash){
-  const push=()=>{hd.style.top=flash.classList.contains('show')?flash.offsetHeight+'px':'0'};
-  const show=()=>{flash.classList.add('show');push()};
-  const hide=()=>{flash.classList.remove('show');push()};
-  addEventListener('resize',push);
+  const show=()=>flash.classList.add('show');
+  const hide=()=>flash.classList.remove('show');
   try{if(!sessionStorage.getItem('flashDismissed'))setTimeout(show,400)}catch(e){show()}
   flash.querySelector('.flash-x').onclick=()=>{hide();try{sessionStorage.setItem('flashDismissed','1')}catch(e){}};
 }
+document.addEventListener('click',e=>{const i=e.target.closest&&e.target.closest('img.pimg');if(i&&!document.body.classList.contains('editing')&&!i.classList.contains('empty'))window.open(i.src,'_blank')});
