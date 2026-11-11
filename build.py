@@ -90,6 +90,11 @@ def T(default, rich=False, page=None):
     return f'<span data-e="{pg}|t.{tid}"{" data-rich" if rich else ""}>{inner}</span>'
 
 
+def ER(page, path, v):
+    """Texte modifiable sur plusieurs lignes (Entrée = retour à la ligne)."""
+    return f'<span data-e="{page}|{path}" data-rich>{_rich(v)}</span>'
+
+
 def paras(text):
     return "".join(f"<p>{p.strip()}</p>" for p in (text or "").split("\n\n") if p.strip())
 
@@ -175,7 +180,7 @@ def seegalerie(tag):
     return f'<p class="note reveal seelink"><a href="galerie.html#{tag}">{T("Voir en images dans la galerie →")}</a></p>'
 
 
-FLASH = f'''<aside id="flash" class="flash"><button class="flash-x" aria-label="Fermer">×</button><span class="tag">À ne pas manquer</span><p class="hand">{E("site","flash_event",SITE["flash_event"])}</p><p class="when">{E("site","flash_date",SITE["flash_date"])}</p><a href="agenda.html">Voir l'agenda →</a></aside>'''
+FLASH = f'''<aside id="flash" class="flash"><button class="flash-x" aria-label="Fermer">×</button><span class="tag">À ne pas manquer</span><p class="hand">{ER("site","flash_event",SITE["flash_event"])}</p><p class="when">{ER("site","flash_date",SITE["flash_date"])}</p><a href="agenda.html">Voir l'agenda →</a></aside>'''
 
 pages = {}
 
