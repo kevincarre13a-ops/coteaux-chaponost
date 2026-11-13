@@ -34,6 +34,11 @@
       "tag": "t"
     },
     {
+      "image": "img/photo-1794580929157-130.jpg",
+      "caption": "Le panneau de l'association",
+      "tag": "c"
+    },
+    {
       "image": "img/taille.jpg",
       "caption": "Taille de la vigne",
       "tag": "t"
@@ -54,24 +59,19 @@
       "tag": "t"
     },
     {
-      "image": "img/panneau.jpg",
-      "caption": "Le panneau de l'association",
-      "tag": "c"
-    },
-    {
       "image": "img/photo-1793867602931-718.jpg",
       "caption": "Nouvelle photo",
       "tag": "t"
     },
     {
-      "image": "img/photo-1793880524214-188.jpg",
-      "caption": "Nouvelle photo",
-      "tag": "f"
-    },
-    {
       "image": "img/panneau.jpg",
       "caption": "Nouvelle photo",
       "tag": "c"
+    },
+    {
+      "image": "img/photo-1793880524214-188.jpg",
+      "caption": "Nouvelle photo",
+      "tag": "f"
     },
     {
       "image": "img/panneau.jpg",
