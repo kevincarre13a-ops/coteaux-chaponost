@@ -60,16 +60,10 @@
   "bottle_red_desc": "Notre vin rouge, issu aussi de la dernière vigne du village.",
   "millesimes": [
     {
-      "year": "2025",
-      "blanc": "—",
-      "rouge": "—",
-      "remarks": ""
-    },
-    {
-      "year": "2024",
-      "blanc": "—0",
-      "rouge": "—200",
-      "remarks": ""
+      "year": "2022",
+      "blanc": "253",
+      "rouge": "165",
+      "remarks": "À compléter"
     },
     {
       "year": "2023",
@@ -78,9 +72,21 @@
       "remarks": ""
     },
     {
-      "year": "2022",
-      "blanc": "253",
-      "rouge": "165",
+      "year": "2024",
+      "blanc": "0",
+      "rouge": "200",
+      "remarks": ""
+    },
+    {
+      "year": "2025",
+      "blanc": "",
+      "rouge": "",
+      "remarks": ""
+    },
+    {
+      "year": "2026",
+      "blanc": "",
+      "rouge": "",
       "remarks": ""
     },
     {
