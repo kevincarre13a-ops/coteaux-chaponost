@@ -63,25 +63,31 @@
       "year": "2025",
       "blanc": "—",
       "rouge": "—",
-      "remarks": "à compléter"
+      "remarks": ""
     },
     {
       "year": "2024",
-      "blanc": "—",
-      "rouge": "—",
-      "remarks": "à compléter"
+      "blanc": "—0",
+      "rouge": "—200",
+      "remarks": ""
     },
     {
       "year": "2023",
-      "blanc": "—",
-      "rouge": "—",
-      "remarks": "à compléter"
+      "blanc": "151",
+      "rouge": "181",
+      "remarks": ""
+    },
+    {
+      "year": "2022",
+      "blanc": "253",
+      "rouge": "165",
+      "remarks": ""
     },
     {
       "year": "Moyenne sur 10 ans",
-      "blanc": "À compléter",
-      "rouge": "À compléter",
-      "remarks": "À compléter"
+      "blanc": "109",
+      "rouge": "188",
+      "remarks": ""
     }
   ],
   "t": {
