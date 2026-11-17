@@ -1,7 +1,7 @@
 {
   "meta_desc": "La parcelle, le terroir, les cépages, les travaux de la vigne, le vigneron partenaire et les vins des Coteaux de Chaponost.",
   "hero_image": "img/rangs.jpg",
-  "terroir_text": "La commune de Chaponost est située dans l'appellation \"AOC Coteaux du Lyonnais\" qui s'étend sur les collines à l'ouest de Lyon. La vigne de l'Arcelan, qui en fait partie, bénéficie d'une belle exposition pour produire du rouge en Gamay et du blanc en Chardonnay.\n\nCette parcelle est la dernière de la commune.",
+  "terroir_text": "La commune de Chaponost est située dans l'appellation \"AOC Coteaux du Lyonnais\" qui s'étend sur les collines à l'ouest de Lyon. La vigne de l'Arcelan, qui fait partie du périmètre, bénéficie d'une belle exposition pour produire du rouge en Gamay et du blanc en Chardonnay.\n\nCette parcelle est la dernière de la commune.",
   "terroir_image": "img/neige.jpg",
   "loc_location": "Chemin de l'Arcelan, 69630 Chaponost",
   "loc_surface": "10 ares",
@@ -30,7 +30,7 @@
     },
     {
       "title": "Taille",
-      "text": "Hiver (février –mars) — Taille Gobelet pour le Gamay, et Guyot pour le Chardonnay."
+      "text": "Hiver (février –mars) — Taille Gobelet pour le Gamay, et Guyot simple pour le Chardonnay."
     },
     {
       "title": "Traitements",
