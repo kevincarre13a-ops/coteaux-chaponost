@@ -229,7 +229,7 @@ f'<div class="cards reveal" data-list="{P}|press_items">{press_items}</div></sec
 # ---------- LA VIGNE (fusion vigne + vins)
 def bouteille(nom, cls, cepage_html, desc_html):
     return f'''<article class="vin {cls} reveal"><div class="etiq"><svg viewBox="0 0 60 150" class="btl"><path d="M24 4h12v26c0 8 14 14 14 34v76c0 4-3 6-6 6H16c-3 0-6-2-6-6V64c0-20 14-26 14-34z" fill="currentColor"/><rect x="14" y="78" width="32" height="40" rx="2" fill="#f3ead7"/><text x="30" y="96" text-anchor="middle" font-size="6" font-family="serif" fill="#5b1424">LES COTEAUX</text><text x="30" y="105" text-anchor="middle" font-size="5" font-family="serif" fill="#5b1424">de Chaponost</text><text x="30" y="113" text-anchor="middle" font-size="4" font-family="serif" fill="#7a5230">Coteaux du Lyonnais</text></svg></div>
-<div><h3>{nom}</h3><p>{desc_html}</p><dl><dt>Millésime</dt><dd>à compléter</dd><dt>Cépage</dt><dd>{cepage_html}</dd><dt>Volume</dt><dd>à compléter</dd><dt>Notes de dégustation</dt><dd>à compléter</dd></dl></div></article>'''
+<div><h3>{nom}</h3><p>{desc_html}</p><dl><dt>Cépage</dt><dd>{cepage_html}</dd></dl></div></article>'''
 
 
 P = "la-vigne"; c = load(P)
