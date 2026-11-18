@@ -92,13 +92,6 @@
   "video_note": "Une première vidéo en ligne ; la taille, les vendanges, le pressage et le banquet suivront.",
   "videos": [
     {
-      "caption": "La petite histoire du vin",
-      "youtube": "",
-      "file": "img/histoire-du-vin.mp4",
-      "poster": "img/poster-video.jpg",
-      "bg": ""
-    },
-    {
       "caption": "Un an à la vigne ...",
       "youtube": "",
       "file": "img/video-1793640672283.mp4",
@@ -106,11 +99,11 @@
       "bg": "img/vendanges.jpg"
     },
     {
-      "caption": "Banquet annuel — vidéo à venir",
+      "caption": "La petite histoire du vin",
       "youtube": "",
-      "file": "",
-      "poster": "",
-      "bg": "img/banquet.jpg"
+      "file": "img/histoire-du-vin.mp4",
+      "poster": "img/poster-video.jpg",
+      "bg": ""
     }
   ],
   "t": {
