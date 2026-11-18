@@ -55,7 +55,7 @@
     },
     {
       "image": "img/cerises.jpg",
-      "caption": "Cerises du verger",
+      "caption": "Cerises Burlat du verger",
       "tag": "t"
     },
     {
@@ -74,13 +74,18 @@
       "tag": "f"
     },
     {
-      "image": "img/panneau.jpg",
-      "caption": "Nouvelle photo",
+      "image": "img/photo-1795000469012-278.jpg",
+      "caption": "Notre vigneron explique la taille à notre président (la taille est primordiale pour la qualité de la vigne).",
       "tag": "c"
     },
     {
       "image": "img/panneau.jpg",
-      "caption": "Nouvelle photo",
+      "caption": "L'entrée du site de l'Arcelan.",
+      "tag": "c"
+    },
+    {
+      "image": "img/photo-1795000866287-451.jpg",
+      "caption": "La cueillette des cerises pour la confiture ...",
       "tag": "c"
     }
   ],
