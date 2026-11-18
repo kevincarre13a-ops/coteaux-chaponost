@@ -101,3 +101,10 @@ body.editing footer .cc-linkbtn{display:block;margin:6px 0 0}
 .cc-pending{flex:1 1 100%;text-align:center;background:#fff4c9;color:#5b3a00;border-radius:10px;padding:8px 12px;font-weight:700}
 .cc-save{font-size:21px}
 @media(max-width:700px){.cc-pub{flex:1 1 100%;font-size:20px;padding:13px}}
+
+/* galerie : légende toujours accessible (elle était cachée sous le menu de catégorie) */
+body.editing .tile .tlabel{display:none}
+body.editing .tile .tcap{bottom:0;z-index:31;padding:8px 10px;border-top:2px solid #2e7d32;min-height:2.4em}
+body.editing .tile .tcap:before{content:"✏️ Légende : ";font-weight:700;color:#2e7d32;font-style:normal}
+.tile .cc-tag{top:58px;bottom:auto;right:8px;left:auto;width:auto;max-width:42%;height:34px;padding:2px 6px;font-size:14px}
+.tile .cc-imgbtn{top:58px;bottom:auto;left:8px;padding:6px 10px;font-size:14px;border-width:2px;border-radius:9px;max-width:54%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
