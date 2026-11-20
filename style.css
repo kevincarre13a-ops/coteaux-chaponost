@@ -134,3 +134,6 @@ body.editing .flash{bottom:150px}
 
 .hero h1,.hero .sub,.hero .kicker{text-shadow:0 2px 18px #000a,0 1px 3px #0009}
 .recolte figure{max-width:760px;margin:0 auto}.recolte figure img{aspect-ratio:4/3;transform:rotate(-1deg)}
+
+/* vidéos YouTube : le cadre se réduisait à 0 px dans les navigateurs récents (centrage hérité) */
+.vid.real{justify-items:normal;place-items:normal}.vframe{width:100%}
