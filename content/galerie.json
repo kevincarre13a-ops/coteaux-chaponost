@@ -99,15 +99,22 @@
       "bg": "img/vendanges.jpg"
     },
     {
-      "caption": "La petite histoire du vin",
-      "youtube": "",
+      "caption": "Taille des blancs en2024",
+      "youtube": "https://youtu.be/h3x964zAEfk",
       "file": "img/histoire-du-vin.mp4",
       "poster": "img/poster-video.jpg",
       "bg": ""
     },
     {
-      "caption": "Taille des blancs en2024",
-      "youtube": "https://youtu.be/h3x964zAEfk",
+      "caption": "Taille des rouges en 2026",
+      "youtube": "https://youtube.com/shorts/dbJ-JX3rnhw",
+      "file": "img/histoire-du-vin.mp4",
+      "poster": "img/poster-video.jpg",
+      "bg": ""
+    },
+    {
+      "caption": "La petite histoire du vin",
+      "youtube": "",
       "file": "img/histoire-du-vin.mp4",
       "poster": "img/poster-video.jpg",
       "bg": ""
