@@ -99,6 +99,13 @@
       "bg": "img/vendanges.jpg"
     },
     {
+      "caption": "Taille des rouges par le vigneron",
+      "youtube": "https://youtu.be/8cSFS8xjKyQ?si=e4-BWjrcGyXRioXs",
+      "file": "img/histoire-du-vin.mp4",
+      "poster": "img/poster-video.jpg",
+      "bg": ""
+    },
+    {
       "caption": "Taille des blancs en2024",
       "youtube": "https://youtu.be/h3x964zAEfk",
       "file": "img/histoire-du-vin.mp4",
@@ -115,13 +122,6 @@
     {
       "caption": "La petite histoire du vin",
       "youtube": "",
-      "file": "img/histoire-du-vin.mp4",
-      "poster": "img/poster-video.jpg",
-      "bg": ""
-    },
-    {
-      "caption": "Taille des rouges par le vigneron",
-      "youtube": "https://youtu.be/8cSFS8xjKyQ?si=e4-BWjrcGyXRioXs",
       "file": "img/histoire-du-vin.mp4",
       "poster": "img/poster-video.jpg",
       "bg": ""
