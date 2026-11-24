@@ -106,13 +106,6 @@
       "bg": ""
     },
     {
-      "caption": "Taille des blancs en2024",
-      "youtube": "https://youtu.be/h3x964zAEfk",
-      "file": "img/histoire-du-vin.mp4",
-      "poster": "img/poster-video.jpg",
-      "bg": ""
-    },
-    {
       "caption": "Taille des rouges en 2026",
       "youtube": "https://youtube.com/shorts/dbJ-JX3rnhw",
       "file": "img/histoire-du-vin.mp4",
@@ -122,6 +115,13 @@
     {
       "caption": "La petite histoire du vin",
       "youtube": "",
+      "file": "img/histoire-du-vin.mp4",
+      "poster": "img/poster-video.jpg",
+      "bg": ""
+    },
+    {
+      "caption": "Taille des blancs 2024",
+      "youtube": "https://youtu.be/TeRzhUnP0t0",
       "file": "img/histoire-du-vin.mp4",
       "poster": "img/poster-video.jpg",
       "bg": ""
